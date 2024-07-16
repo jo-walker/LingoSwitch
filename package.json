@@ -1,0 +1,26 @@
+{
+  "name": "lingoswitch",
+  "version": "1.0.0",
+  "description": "The project aims to create a multi-language, dynamic web application with a centralized system for managing UI strings. This approach not only improves maintainability and scalability but also enhances the user experience by providing seamless language switching capabilities.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jo-walker/LingoSwitch.git"
+  },
+  "author": "jot",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jo-walker/LingoSwitch/issues"
+  },
+  "homepage": "https://github.com/jo-walker/LingoSwitch#readme",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.5.1"
+  }
+}
