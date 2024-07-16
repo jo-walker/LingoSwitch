@@ -1,0 +1,19 @@
+<div>
+    <h2>Add New String</h2>
+    <form (ngSubmit)="addString()">
+      <div>
+        <label for="value">Value:</label>
+        <input type="text" id="value" [(ngModel)]="stringData.value" name="value" required>
+      </div>
+      <div>
+        <label for="language">Language:</label>
+        <input type="text" id="language" [(ngModel)]="stringData.language" name="language" required>
+      </div>
+      <div>
+        <label for="urls">URLs:</label>
+        <input type="text" id="urls" [(ngModel)]="stringData.urls[0]" name="urls" required>
+      </div>
+      <button type="submit">Add String</button>
+    </form>
+  </div>
+  
