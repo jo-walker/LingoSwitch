@@ -1,12 +1,21 @@
 import globals from "globals";
 import pluginJs from "@eslint/js";
-import tseslint from "typescript-eslint";
-
 
 export default [
-  {files: ["**/*.{js,mjs,cjs,ts}"]},
-  {files: ["**/*.js"], languageOptions: {sourceType: "script"}},
-  {languageOptions: { globals: globals.browser }},
+  {
+    files: ["**/*.js"],
+    languageOptions: {
+      sourceType: "commonjs",
+      ecmaVersion: 12,
+      globals: {
+        ...globals.node, // Add Node.js globals
+      },
+    },
+    rules: {
+      "no-unused-vars": "warn",
+      "no-var-requires": "off",
+      "no-undef": "off",
+    },
+  },
   pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
 ];

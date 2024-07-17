@@ -1,15 +1,15 @@
 const String = require('../models/String');
 
-exports.getStrings = async (req, res) => {
+exports.getStrings = async (req, res, next) => {
   try {
     const strings = await String.find({ language: req.query.language, urls: req.query.url, deleted: false });
     res.json(strings);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    next(err);
   }
 };
 
-exports.addString = async (req, res) => {
+exports.addString = async (req, res, next) => {
   try {
     const { value, language, urls } = req.body;
     const key = value.toLowerCase().replace(/\s+/g, '_');
@@ -23,8 +23,6 @@ exports.addString = async (req, res) => {
     await newString.save();
     res.status(201).json(newString);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    next(err);
   }
 };
-
-// Add more controller methods for update, delete etc.
