@@ -46,10 +46,6 @@ The project aims to create a multi-language, dynamic web application with a cent
    ```
    ng serve
    ```
-6. Running the Application
-   ```
-   mongod
-   ```
 
 ## API Documentation:
 
