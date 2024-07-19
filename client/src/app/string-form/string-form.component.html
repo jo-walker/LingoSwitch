@@ -1,19 +1,19 @@
-<div>
-    <h2>Add New String</h2>
-    <form (ngSubmit)="addString()">
-      <div>
-        <label for="value">Value:</label>
-        <input type="text" id="value" [(ngModel)]="stringData.value" name="value" required>
-      </div>
-      <div>
-        <label for="language">Language:</label>
-        <input type="text" id="language" [(ngModel)]="stringData.language" name="language" required>
-      </div>
-      <div>
-        <label for="urls">URLs:</label>
-        <input type="text" id="urls" [(ngModel)]="stringData.urls[0]" name="urls" required>
-      </div>
-      <button type="submit">Add String</button>
-    </form>
-  </div>
-  
+<p>String Form Component Loaded</p>
+<form (ngSubmit)="addString()" class="string-form">
+  <mat-form-field appearance="fill">
+    <mat-label>Value</mat-label>
+    <input matInput type="text" [(ngModel)]="value" name="value" required>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Language</mat-label>
+    <input matInput type="text" [(ngModel)]="language" name="language" required>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>URLs</mat-label>
+    <input matInput type="text" [(ngModel)]="urls" name="urls" required>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit">Add String</button>
+</form>
