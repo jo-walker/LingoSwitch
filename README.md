@@ -73,7 +73,7 @@ Request Body:
 
 ## Screenshots
 ### Web UI
-![Web UI](./screenshots/webui.png)
+![Web UI](./server/screenshots/webui.png)
 ### Postman GET request
 ![Postman GET Request](./server/screenshots/postmangetrequest.png)
 
