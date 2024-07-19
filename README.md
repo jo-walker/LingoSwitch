@@ -83,13 +83,48 @@ Request Body:
 - responsiveness
 - angular material for css
 
-## Security
-- implemented env vars for sensitive info
-- use authentication and authorization
-  // Example: Using environment variables
-  require('dotenv').config();
-  const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/your_database_name';
-  mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
+##Meeting Project Requirements
+
+1. Database Structure
+
+	•	MongoDB is used to store strings with keys, values, languages, and URLs.
+	•	Schema is defined in server/models/String.js.
+
+2. Coding Style
+
+	•	Followed JavaScript and Angular style guides.
+	•	Used ESLint and Prettier for code formatting.
+
+3. Error Handling
+
+	•	Implemented error handling in Express routes.
+	•	Frontend displays error messages using Angular Material Snackbar.
+
+4. Documentation of Code
+
+	•	Code is well-documented with comments explaining functionality.
+	•	README.md provides comprehensive setup and usage instructions.
+
+5. Efficiency of Code
+
+	•	Used Mongoose for efficient database interactions.
+	•	Optimized Angular components for performance.
+
+6. UI Design
+
+	•	Used Angular Material for a consistent and responsive design.
+	•	Form and list views are styled for clarity and usability.
+
+7. Use of GitHub
+
+	•	Code is hosted on GitHub with proper commit messages.
+	•	Project can be cloned and run as described in the README.
+
+8. Security
+
+	•	Used Helmet, xss-clean, and express-mongo-sanitize to enhance security.
+	•	Validated inputs to prevent common vulnerabilities.
+* implemented env vars for sensitive info
 
 ## Contributing
 Feel free to open issues or submit pull requests for any improvements or bug fixes.
