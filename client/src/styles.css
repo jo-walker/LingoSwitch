@@ -1,1 +1,68 @@
 /* You can add global styles to this file, and also import other style files */
+/* @import "~@angular/material/prebuilt-themes/indigo-pink.css"; */
+/* Custom global styles */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .string-form {
+    margin-bottom: 20px;
+  }
+  
+  .string-form mat-form-field {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .string-list {
+    padding: 20px;
+  }
+  
+  .string-list h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .mat-list-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .mat-list-item h3 {
+    font-size: 18px;
+    margin: 0;
+    flex: 1;
+  }
+  
+  .mat-list-item p {
+    font-size: 14px;
+    margin: 0;
+    flex: 1;
+  }
+  
+  .mat-list-item mat-icon {
+    margin-right: 10px;
+  }
+  
+  .mat-list-item mat-icon, .mat-list-item h3, .mat-list-item p {
+    flex: 1;
+  }
+  
+  
+  /* resposiveness */
+  @media (max-width: 600px) {
+    .string-form,
+    .string-list {
+      padding: 10px;
+    }
+  
+    .string-list mat-list-item {
+      padding: 5px 0;
+    }
+  }
+  
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

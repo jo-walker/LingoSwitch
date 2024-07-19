@@ -3,6 +3,9 @@ const connectDB = require('./config/db');
 const stringRoutes = require('./routes/strings');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const helmet = require('helmet');
+const xssClean = require('xss-clean');
+const mongoSanitize = require('express-mongo-sanitize');
 
 const app = express();
 
@@ -11,14 +14,16 @@ connectDB();
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(helmet());
+app.use(xssClean());
+app.use(mongoSanitize());
 
 // Use Routes
 app.use('/api/strings', stringRoutes);
 
 // Error handling middleware
-// eslint-disable-next-line no-unused-vars
-  app.use((err, req, res, next) => {
-  console.error(err.stack);
+app.use((err, req, res, next) => {
+  console.error('Unhandled error:', err.stack);
   res.status(500).json({ message: 'Something went wrong!' });
 });
 

@@ -1,20 +1,20 @@
-import globals from "globals";
-import pluginJs from "@eslint/js";
+import globals from 'globals';
+import pluginJs from '@eslint/js';
 
 export default [
   {
-    files: ["**/*.js"],
+    files: ['**/*.js'],
     languageOptions: {
-      sourceType: "commonjs",
+      sourceType: 'commonjs',
       ecmaVersion: 12,
       globals: {
         ...globals.node, // Add Node.js globals
       },
     },
     rules: {
-      "no-unused-vars": "warn",
-      "no-var-requires": "off",
-      "no-undef": "off",
+      'no-unused-vars': 'warn',
+      'no-var-requires': 'off',
+      'no-undef': 'off',
     },
   },
   pluginJs.configs.recommended,

@@ -8,8 +8,6 @@ import { StringService } from '../string.service';
 })
 export class StringListComponent implements OnInit {
   strings: any[] = [];
-  language = 'en';
-  url = '/home';
 
   constructor(private stringService: StringService) {}
 
@@ -17,9 +15,12 @@ export class StringListComponent implements OnInit {
     this.loadStrings();
   }
 
-  loadStrings(): void {
-    this.stringService.getStrings(this.language, this.url).subscribe(data => {
+  loadStrings() {
+    this.stringService.getStrings().subscribe(data => {
       this.strings = data;
+      console.log('Strings loaded:', this.strings);
+    }, error => {
+      console.error('Error loading strings:', error);
     });
   }
 }
