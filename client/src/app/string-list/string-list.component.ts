@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { StringService } from '../string.service';
+import { Component, Inject, OnInit } from '@angular/core';
+import { StringService } from './string.service';
 
 @Component({
   selector: 'app-string-list',
@@ -8,19 +8,36 @@ import { StringService } from '../string.service';
 })
 export class StringListComponent implements OnInit {
   strings: any[] = [];
+  selectedLanguage: string = 'en'; // Default language
+  currentUrl: string = window.location.pathname;
+  languages: string[] = [];
 
   constructor(private stringService: StringService) {}
 
   ngOnInit(): void {
-    this.loadStrings();
+    this.fetchLanguages();
   }
 
-  loadStrings() {
-    this.stringService.getStrings().subscribe(data => {
-      this.strings = data;
-      console.log('Strings loaded:', this.strings);
-    }, error => {
-      console.error('Error loading strings:', error);
-    });
+  fetchLanguages(): void {
+    this.stringService.getLanguages().subscribe(
+      (data) => {
+        this.languages = data;
+        this.fetchStrings(); // Fetch strings after loading languages
+      },
+      (error) => {
+        console.error('Error fetching languages', error);
+      }
+    );
+  }
+
+  fetchStrings(): void {
+    this.stringService.getStrings(this.currentUrl, this.selectedLanguage).subscribe(
+      (data) => {
+        this.strings = data;
+      },
+      (error) => {
+        console.error('Error fetching strings', error);
+      }
+    );
   }
 }

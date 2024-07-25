@@ -8,7 +8,7 @@ export default [
       sourceType: 'commonjs',
       ecmaVersion: 12,
       globals: {
-        ...globals.node, // Add Node.js globals
+        ...globals.node, // Adding Node.js globals
       },
     },
     rules: {
