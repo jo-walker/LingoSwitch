@@ -1,13 +1,14 @@
-<div class="string-list-container">
-  <h2>Strings List</h2>
-  <mat-list>
-    <mat-list-item *ngFor="let string of strings">
-      <div class="string-item">
-        <p><strong>Value:</strong> {{ string.value }}</p>
-        <p><strong>Language:</strong> {{ string.language }}</p>
-        <p><strong>URLs:</strong> {{ string.urls.join(', ') }}</p>
-      </div>
-      <div class="spacer"></div> <!-- Add this line to insert a spacer element -->
-    </mat-list-item>
-  </mat-list>
+<div class="container">
+  <h1>Multi-Language Strings</h1>
+  <div>
+    <label for="languageSelect">Select Language: </label>
+    <select id="languageSelect" [(ngModel)]="selectedLanguage" (change)="fetchStrings()">
+      <option *ngFor="let language of languages" [value]="language">{{ language }}</option>
+    </select>
+  </div>
+  <div *ngFor="let string of strings" class="string-item">
+    <p>{{ string.value }}</p>
+    <p><strong>Language:</strong> {{ string.language }}</p>
+    <p><strong>URLs:</strong> {{ string.urls.join(', ') }}</p>
+  </div>
 </div>
