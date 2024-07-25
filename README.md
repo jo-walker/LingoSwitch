@@ -11,7 +11,7 @@ The project aims to create a multi-language, dynamic web application with a cent
 
 - **Frontend**: Angular 17, Angular Material
 - **Backend**: Node.js 20, Express.js
-- **Database**: MongoDB
+- **Database**: MySQL
 - **Styling**: Angular Material, CSS
 
 ## Getting Started
@@ -19,7 +19,7 @@ The project aims to create a multi-language, dynamic web application with a cent
 ### Prerequisites
 
 - Node.js
-- MongoDB
+- MySQL
 - Angular CLI
 
 ## Setup Instuction:
@@ -45,10 +45,6 @@ The project aims to create a multi-language, dynamic web application with a cent
 5. start the Angular application
    ```
    ng serve
-   ```
-6. Running the Application
-   ```
-   mongod
    ```
 
 ## API Documentation:
