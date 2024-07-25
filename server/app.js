@@ -1,75 +1,44 @@
 const express = require('express');
-const connectDB = require('./config/db');
-const stringRoutes = require('./routes/strings');
-const StringModel = require('./models/String');
+require('dotenv').config();
+const sequelize = require('./config/database');
+const stringRoutes = require('./routes/string');
+const projectRoutes = require('./routes/project');
+const authRoutes = require('./routes/auth');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const helmet = require('helmet');
 const xssClean = require('xss-clean');
-const mongoSanitize = require('express-mongo-sanitize');
 
-const app = express(); // Initialize express app instance to use its methods and properties like .use(), .get(), .post(), etc. 
+// Initialize Express app
+const app = express();
 
-// Connect to MongoDB
-connectDB();
+// Configure CORS
+const corsOptions = {
+  origin: 'http://localhost:4200', // Angular app URL
+  optionsSuccessStatus: 200
+};
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(helmet());
 app.use(xssClean());
-app.use(mongoSanitize());
 
-// API endpoint to fetch supported languages
-app.get('/api/languages', async (req, res) => {
-  try {
-    const languages = await StringModel.distinct('language');
-    res.json(languages);
-  } catch (error) {
-    res.status(500).json({ message: 'Error retrieving languages', error });
-  }
-});
+// Define routes
+app.use('/api/strings', stringRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/projects', projectRoutes);
 
-// API endpoint to fetch strings based on URL and language
-app.get('/api/strings', async (req, res) => {
-  const { url, language } = req.query;
-  try {
-    const strings = await StringModel.find({
-      urls: url,
-      language: language,
-      deleted: false,
-    });
-    res.json(strings);
-  } catch (error) {
-    res.status(500).json({ message: 'Error retrieving strings', error });
-  }
-});
-
-// API endpoint to add new strings
-app.post('/api/strings', async (req, res) => {
-  const { value, language, urls } = req.body;
-
-  try {
-    const existingString = await StringModel.findOne({ value, language, deleted: false });
-    if (existingString && !urls.every(url => existingString.urls.includes(url))) {
-      return res.status(409).json({
-        message: `String with value "${value}" already exists in another URL(s): ${existingString.urls.join(', ')}. Do you want to add it to the new URL(s)?`
-      });
-    }
-
-    const newString = new StringModel({
-      key: uuidv4(),
-      value,
-      language,
-      urls,
-      deleted: false
+sequelize.authenticate()
+    .then(() => {
+        console.log('Connection has been established successfully.');
+        const PORT = process.env.PORT || 5000;
+        app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    })
+    .catch(err => {
+        console.error('Unable to connect to the database:', err);
     });
 
-    const savedString = await newString.save();
-    res.status(201).json(savedString);
-  } catch (error) {
-    res.status(500).json({ message: 'Error saving string', error });
-  }
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: 'Something went wrong!' });
 });
-
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

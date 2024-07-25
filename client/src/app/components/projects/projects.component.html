@@ -1,0 +1,11 @@
+<div class="projects-container">
+  <h2>Projects</h2>
+  <button routerLink="/projects/new">Add Project</button>
+  <ul>
+    <li *ngFor="let project of projects">
+      <p>{{ project.name }}</p>
+      <button [routerLink]="['/projects/edit', project.id]">Edit</button>
+      <button (click)="deleteProject(project.id)">Delete</button>
+    </li>
+  </ul>
+</div>
