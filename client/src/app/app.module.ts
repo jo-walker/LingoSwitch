@@ -1,40 +1,45 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatListModule } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { HttpClientModule } from '@angular/common/http';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
 
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { StringFormComponent } from './string-form/string-form.component';
-import { StringListComponent } from './string-list/string-list.component';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { LoginComponent } from './components/login/login.component';
+import { ProjectsComponent } from './components/projects/projects.component';
+import { ProjectFormComponent } from './components/project-form/project-form.component';
+import { StringsComponent } from './components/strings/strings.component'; // Add the StringsComponent
+import { AuthGuard } from './guards/auth.guard';
+import { AuthInterceptor } from './interceptors/auth.interceptors';
 
 @NgModule({
   declarations: [
     AppComponent,
-    StringFormComponent,
-    StringListComponent
+    LoginComponent,
+    ProjectsComponent,
+    ProjectFormComponent,
+    StringsComponent // Declare the StringsComponent
   ],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
+    AppRoutingModule,
+    HttpClientModule,
     FormsModule,
-    MatButtonModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatListModule,
-    MatIconModule,
-    MatSnackBarModule,
-    HttpClientModule
+    MatSelectModule,
+    MatButtonModule
   ],
   providers: [
-    provideAnimationsAsync()
+    AuthGuard,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

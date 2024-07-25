@@ -1,0 +1,39 @@
+<div class="strings-container">
+    <h2>Strings for Project {{ projectId }}</h2>
+    <form (submit)="onSubmit()">
+      <div>
+        <label for="key">Key:</label>
+        <select id="key" [(ngModel)]="selectedKey" name="key" (change)="loadString()">
+          <option *ngFor="let string of strings" [value]="string.key">{{ string.key }}</option>
+        </select>
+      </div>
+      <div *ngIf="selectedString">
+        <div>
+          <label for="valueEn">Value (English):</label>
+          <input type="text" id="valueEn" [(ngModel)]="selectedString.values.eng_us" name="valueEn" required>
+        </div>
+        <div>
+          <label for="valueFr">Value (French):</label>
+          <input type="text" id="valueFr" [(ngModel)]="selectedString.values.fr" name="valueFr" required>
+        </div>
+        <div>
+          <label for="valueDe">Value (German):</label>
+          <input type="text" id="valueDe" [(ngModel)]="selectedString.values.de" name="valueDe" required>
+        </div>
+        <div>
+          <label for="urls">URLs:</label>
+          <input type="text" id="urls" [(ngModel)]="urlsInput" name="urls" placeholder="/home,/about" required>
+        </div>
+        <button type="submit">Update String</button>
+        <button type="button" (click)="deleteString()">Delete String</button>
+      </div>
+    </form>
+    <ul>
+      <li *ngFor="let string of strings">
+        <p>Key: {{ string.key }}</p>
+        <p>Values: {{ string.values | json }}</p>
+        <p>URLs: {{ string.urls.join(', ') }}</p>
+      </li>
+    </ul>
+  </div>
+  

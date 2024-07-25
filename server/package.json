@@ -1,39 +1,24 @@
 {
-  "name": "lingoswitch",
-  "version": "1.0.0",
-  "description": "The project aims to create a multi-language, dynamic web application with a centralized system for managing UI strings. This approach not only improves maintainability and scalability but also enhances the user experience by providing seamless language switching capabilities.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jo-walker/LingoSwitch.git"
-  },
-  "author": "jot",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/jo-walker/LingoSwitch/issues"
-  },
-  "homepage": "https://github.com/jo-walker/LingoSwitch#readme",
-  "dependencies": {
-    "body-parser": "^1.20.2",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "express-mongo-sanitize": "^2.2.0",
-    "helmet": "^7.1.0",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.5.1",
-    "xss-clean": "^0.1.4"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.7.0",
-    "eslint": "^9.7.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.2.1",
-    "globals": "^15.8.0",
-    "prettier": "^3.3.3",
-    "typescript-eslint": "^7.16.1"
-  }
+    "name": "lingo-switch-backend",
+    "version": "1.0.0",
+    "description": "Backend for LingoSwitch",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js"
+    },
+    "dependencies": {
+        "bcrypt": "^5.1.1",
+        "bcryptjs": "^2.4.3",
+        "body-parser": "^1.20.2",
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.5",
+        "express": "^4.19.2",
+        "express-mongo-sanitize": "^2.2.0",
+        "helmet": "^7.1.0",
+        "jsonwebtoken": "^8.5.1",
+        "mongoose": "^5.13.22",
+        "mysql2": "^3.10.3",
+        "sequelize": "^6.37.3",
+        "xss-clean": "^0.1.4"
+    }
 }

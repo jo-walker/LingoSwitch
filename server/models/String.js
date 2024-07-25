@@ -1,28 +1,45 @@
-//model for strings
+module.exports = (sequelize, DataTypes) => {
+  const String = sequelize.define('String', {
+    projectId: {
+      type: DataTypes.STRING(10),
+      allowNull: false,
+      references: {
+        model: 'Projects',
+        key: 'id'
+      }
+    },
+    urlId: {
+      type: DataTypes.STRING(10),
+      allowNull: false,
+      references: {
+        model: 'URLs',
+        key: 'id'
+      }
+    },
+    eng_us: DataTypes.TEXT,
+    fr: DataTypes.TEXT,
+    de: DataTypes.TEXT,
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Users',
+        key: 'id'
+      }
+    },
+    addedDate: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
+    },
+    updatedDate: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
+    },
+    oldValue: DataTypes.TEXT,
+    newValue: DataTypes.TEXT
+  }, {
+    timestamps: true
+  });
 
-const mongoose = require('mongoose');
-const { v4: uuidv4 } = require('uuid'); // Import uuidv4 to generate unique key for each string entry 
-const stringSchema = new mongoose.Schema({ // Define the schema for the strings collection
-  key: {
-    type: String, 
-    default: uuidv4, // Generate a unique key for each string entry
-    unique: true
-  },
-  value: {
-    type: String,
-    required: true
-  },
-  language: {
-    type: String,
-    required: true
-  },
-  urls: {
-    type: [String],
-    required: true
-  },
-  deleted: {
-    type: Boolean,
-    default: false
-  }
-});
-module.exports = mongoose.model('String', stringSchema);
+  return String;
+};
