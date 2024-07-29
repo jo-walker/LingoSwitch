@@ -1,21 +1,22 @@
-const Project = require('../models/Project');
+const db = require('../models');
+const Project = db.Project;
 
 exports.createProject = async (req, res) => {
   try {
-    const { name, languages } = req.body;
-    const project = new Project({ name, languages });
-    await project.save();
-    res.status(201).json({ message: 'Project created', project });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    const project = await Project.create(req.body);
+    res.status(201).json(project);
+  } catch (error) {
+    console.error('Error creating project:', error);
+    res.status(500).json({ message: 'Internal Server Error', error: error.message });
   }
 };
 
-exports.getProjects = async (req, res) => {
+exports.getAllProjects = async (req, res) => {
   try {
-    const projects = await Project.find();
-    res.json(projects);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    const projects = await Project.findAll();
+    res.status(200).json(projects);
+  } catch (error) {
+    console.error('Error getting all projects:', error);
+    res.status(500).json({ message: 'Internal Server Error', error: error.message });
   }
 };

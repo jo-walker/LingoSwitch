@@ -28,15 +28,15 @@ app.use('/api/strings', stringRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
 
-sequelize.authenticate()
-    .then(() => {
-        console.log('Connection has been established successfully.');
-        const PORT = process.env.PORT || 5000;
-        app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-    })
-    .catch(err => {
-        console.error('Unable to connect to the database:', err);
-    });
+sequelize.sync({ alter: true }) // alter: true will update the table to match the model definition
+  .then(() => {
+    console.log('Database synchronized');
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  })
+  .catch(err => {
+    console.error('Unable to synchronize the database:', err);
+  });
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
