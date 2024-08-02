@@ -1,89 +1,59 @@
-const { String, Project, URL, User } = require('../models');
+const { String } = require('../models');
 
-exports.createString = async (req, res) => {
+exports.getStrings = async (req, res) => {
   try {
-    const { projectId, urlId, eng_us, fr, de, userId } = req.body;
-    const newString = await String.create({
-      projectId,
-      urlId,
-      eng_us,
-      fr,
-      de,
-      userId,
-      oldValue: '',
-      newValue: ''
-    });
-    res.status(201).json({ message: 'String created', newString });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    const strings = await String.findAll();
+    res.status(200).json(strings);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
 
-exports.getString = async (req, res) => {
+exports.getStringById = async (req, res) => {
   try {
-    const { id } = req.params;
-    const string = await String.findByPk(id, { include: [Project, URL, User] });
-    res.json(string);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    const string = await String.findByPk(req.params.id);
+    if (!string) {
+      return res.status(404).json({ error: 'String not found' });
+    }
+    res.status(200).json(string);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.createString = async (req, res) => {
+  try {
+    const { urlId, eng_us, fr, de, userId, projectId, history } = req.body;
+    const newString = await String.create({ urlId, eng_us, fr, de, userId, projectId, history });
+    res.status(201).json(newString);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
 
 exports.updateString = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { eng_us, fr, de, urls } = req.body;
-    const string = await String.findByPk(id);
-    const oldValue = JSON.stringify({ eng_us: string.eng_us, fr: string.fr, de: string.de });
-    const newValue = JSON.stringify({ eng_us, fr, de });
-    await string.update({ eng_us, fr, de, oldValue, newValue });
-    res.json({ message: 'String updated', string });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    const { urlId, eng_us, fr, de, userId, projectId, history } = req.body;
+    const string = await String.findByPk(req.params.id);
+    if (!string) {
+      return res.status(404).json({ error: 'String not found' });
+    }
+    await string.update({ urlId, eng_us, fr, de, userId, projectId, history });
+    res.status(200).json(string);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
 
 exports.deleteString = async (req, res) => {
   try {
-    const { id } = req.params;
-    await String.destroy({ where: { id } });
-    res.json({ message: 'String deleted' });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    const string = await String.findByPk(req.params.id);
+    if (!string) {
+      return res.status(404).json({ error: 'String not found' });
+    }
+    await string.destroy();
+    res.status(204).json({ message: 'String deleted' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
-
-exports.getStringsByUrl = async (req, res) => {
-  try {
-    const { urlId } = req.query;
-    const strings = await String.findAll({ where: { urlId } });
-    res.json(strings);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-
-// const String = require('../models/String');
-
-// exports.createString = async (req, res) => {
-//   console.log("create str request body: ",req.body); //
-//   try {
-//     const { projectId, values, urls } = req.body;
-//     const key = `S_${new Date().getTime()}`;
-//     const string = new String({ key, values, urls, projectId });
-//     await string.save();
-//     res.status(201).json({ message: 'String created', string });
-//   } catch (err) {
-//     res.status(500).json({ message: err.message });
-//   }
-// };
-
-// exports.getStringsByProject = async (req, res) => {
-//   try {
-//     const { projectId } = req.params;
-//     const strings = await String.find({ projectId, isDeleted: false });
-//     res.json(strings);
-//   } catch (err) {
-//     res.status(500).json({ message: err.message });
-//   }
-// };

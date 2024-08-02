@@ -1,44 +1,54 @@
-module.exports = (sequelize, DataTypes) => {
+const { DataTypes } = require('sequelize');
+
+module.exports = (sequelize) => {
   const String = sequelize.define('String', {
-    projectId: {
-      type: DataTypes.STRING(10),
-      allowNull: false,
-      references: {
-        model: 'Projects',
-        key: 'id'
-      }
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
     },
     urlId: {
-      type: DataTypes.STRING(10),
-      allowNull: false,
+      type: DataTypes.STRING(255),
+      allowNull: true,
       references: {
         model: 'URLs',
-        key: 'id'
-      }
+        key: 'id',
+      },
     },
-    eng_us: DataTypes.TEXT,
-    fr: DataTypes.TEXT,
-    de: DataTypes.TEXT,
+    eng_us: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    fr: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    de: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
     userId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       references: {
         model: 'Users',
-        key: 'id'
-      }
+        key: 'id',
+      },
     },
-    addedDate: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW
+    projectId: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      references: {
+        model: 'Projects',
+        key: 'id',
+      },
     },
-    updatedDate: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW
+    history: {
+      type: DataTypes.JSON,
+      allowNull: true,
     },
-    oldValue: DataTypes.TEXT,
-    newValue: DataTypes.TEXT
   }, {
-    timestamps: true
+    timestamps: false,
   });
 
   return String;

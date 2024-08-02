@@ -4,6 +4,8 @@ const sequelize = require('./config/database');
 const stringRoutes = require('./routes/string');
 const projectRoutes = require('./routes/project');
 const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user'); 
+const urlRoutes = require('./routes/urls'); 
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -27,6 +29,8 @@ app.use(xssClean());
 app.use('/api/strings', stringRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/urls', urlRoutes);
 
 sequelize.sync({ alter: true }) // alter: true will update the table to match the model definition
   .then(() => {
