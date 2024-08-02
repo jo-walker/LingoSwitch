@@ -1,19 +1,12 @@
 const express = require('express');
-const { createString, getString, updateString, deleteString, getStringsByUrl } = require('../controllers/stringController');
 const router = express.Router();
+const stringController = require('../controllers/stringController');
 
-router.post('/', createString);
-router.get('/:id', getString);
-router.put('/:id', updateString);
-router.delete('/:id', deleteString);
-router.get('/by-url', getStringsByUrl);
+// Define routes
+router.get('/', stringController.getStrings);
+router.get('/:id', stringController.getStringById);
+router.post('/', stringController.createString);
+router.put('/:id', stringController.updateString);
+router.delete('/:id', stringController.deleteString);
 
 module.exports = router;
-
-// const express = require('express');
-// const { createString, getStringsByProject } = require('../controllers/stringController');
-// const router = express.Router();
-
-// router.post('/', createString); // `createString` is correctly imported
-// router.get('/:projectId', getStringsByProject); 
-// module.exports = router;

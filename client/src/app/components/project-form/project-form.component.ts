@@ -47,10 +47,15 @@ export class ProjectFormComponent implements OnInit {
   onSubmit(): void {
     if (this.projectForm.valid) {
       const project = {
+        id: this.isEditMode && this.projectId ? this.projectId : this.generateId(),
         name: this.projectForm.get('name')?.value,
-        languages: this.projectForm.get('languages')?.value.split(',').map((lang: string) => lang.trim())
+        languages: this.projectForm.get('languages')?.value.split(',').map((lang: string) => lang.trim()),
+        history: {
+          createdAt: new Date().toISOString(),
+          createdBy: 'admin'
+        }
       };
-
+  
       if (this.isEditMode && this.projectId) {
         this.projectService.updateProject(this.projectId, project).subscribe(
           response => {
@@ -73,5 +78,9 @@ export class ProjectFormComponent implements OnInit {
         );
       }
     }
+  }
+
+  private generateId(): string {
+    return Math.random().toString(36).substr(2, 5);
   }
 }

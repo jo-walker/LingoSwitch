@@ -1,0 +1,20 @@
+<div *ngIf="error" class="error">
+  {{ error }}
+</div>
+
+<div *ngIf="project">
+  <h2>{{ project.name }}</h2>
+  <p><strong>Languages:</strong> {{ project.languages | json }}</p>
+  
+  <h3>Users</h3>
+  <ul>
+    <li *ngFor="let user of project.users">{{ user.username }}</li>
+  </ul>
+  
+  <h3>Strings</h3>
+  <ul>
+    <li *ngFor="let string of project.strings">
+      {{ string.eng_us }} (EN), {{ string.fr }} (FR), {{ string.de }} (DE)
+    </li>
+  </ul>
+</div>

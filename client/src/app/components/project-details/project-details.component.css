@@ -1,0 +1,16 @@
+.project-details-container {
+    margin: 20px;
+  }
+  
+  .project-details-container h2 {
+    margin-bottom: 10px;
+  }
+  
+  .project-details-container ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .project-details-container ul li {
+    margin: 5px 0;
+  }  

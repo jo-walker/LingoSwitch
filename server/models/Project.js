@@ -1,20 +1,26 @@
-module.exports = (sequelize, DataTypes) => {
+const { DataTypes } = require('sequelize');
+
+module.exports = (sequelize) => {
   const Project = sequelize.define('Project', {
     id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true
+      type: DataTypes.STRING(5),
+      primaryKey: true,
+      allowNull: false,
     },
     name: {
-      type: DataTypes.STRING,
-      allowNull: false
+      type: DataTypes.STRING(255),
+      allowNull: false,
     },
     languages: {
+      type: DataTypes.ENUM('01', '02', '03'),
+      allowNull: false,
+    },
+    history: {
       type: DataTypes.JSON,
-      allowNull: false
-    }
+      allowNull: true,
+    },
   }, {
-    timestamps: true
+    timestamps: false,
   });
 
   return Project;
