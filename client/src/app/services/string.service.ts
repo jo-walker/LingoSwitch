@@ -1,32 +1,32 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StringService {
-  private baseUrl = 'http://localhost:5000/api/strings'; 
+  private baseUrl = 'http://localhost:5000/api/strings';
 
   constructor(private http: HttpClient) {}
 
-  getString(key: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/${key}`);
+  getStringsByProjectId(projectId: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/by-project/${projectId}`);
   }
 
-  createString(key: string, values: { [key: string]: string }, urls: string[]): Observable<any> {
-    return this.http.post(this.baseUrl, { key, values, urls });
+  getString(id: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/${id}`);
   }
 
-  updateString(key: string, values: { [key: string]: string }, urls: string[]): Observable<any> {
-    return this.http.put(`${this.baseUrl}/${key}`, { values, urls });
+  createString(string: any): Observable<any> {
+    return this.http.post(this.baseUrl, string);
   }
 
-  deleteString(key: string): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/${key}`);
+  updateString(id: string, string: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/${id}`, string);
   }
 
-  getStringsByUrl(url: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/by-url?url=${url}`);
+  deleteString(id: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/${id}`);
   }
 }

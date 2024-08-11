@@ -1,17 +1,61 @@
-const { Project } = require('../models');
+const { Project, String, URL } = require('../models');
+// const Project = require('../models/Project');
 
-exports.getProjects = async (req, res) => {
+exports.getAllProjects = async (req, res) => {
   try {
-    const projects = await Project.findAll();
+    const projects = await Project.findAll({
+      include: ['urls', 'strings'] // Include associated URLs and Strings if needed
+    });
     res.status(200).json(projects);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error fetching projects:', error);
+    res.status(500).json({ error: 'Unable to fetch projects' });
+  }
+};
+
+
+exports.createProjectWithStrings = async (req, res) => {
+  const { name, languages, history, urls, strings } = req.body; // Removed 'id' from destructuring
+  try {
+    // Create the project without passing 'id'
+    const project = await Project.create({ name, languages, history });
+
+    if (urls && urls.length > 0) {
+      for (const urlId of urls) {
+        const url = await URL.findByPk(urlId);
+        if (url) {
+          await project.addUrl(url);
+        } else {
+          const newUrl = await URL.create({ id: urlId, url: urlId });
+          await project.addUrl(newUrl);
+        }
+      }
+    }
+
+    if (strings && strings.length > 0) {
+      for (const stringId of strings) {
+        const string = await String.findByPk(stringId);
+        if (string) {
+          await project.addString(string);
+        } else {
+          const newString = await String.create({ id: stringId, eng_us: '', fr: '', de: '' });
+          await project.addString(newString);
+        }
+      }
+    }
+
+    res.status(201).json(project);
+  } catch (error) {
+    console.error('Error creating project with strings:', error);
+    res.status(500).json({ error: 'Unable to create project with strings' });
   }
 };
 
 exports.getProjectById = async (req, res) => {
   try {
-    const project = await Project.findByPk(req.params.id);
+    const project = await Project.findByPk(req.params.id, {
+      include: ['urls', 'strings']
+    });
     if (!project) {
       return res.status(404).json({ error: 'Project not found' });
     }
@@ -21,29 +65,41 @@ exports.getProjectById = async (req, res) => {
   }
 };
 
-exports.createProject = async (req, res) => {
-  try {
-    const { id, name, languages, history } = req.body;
-    const newProject = await Project.create({ id, name, languages, history });
-    res.status(201).json(newProject);
-  } catch (error) {
-    if (error.name === 'SequelizeValidationError') {
-      res.status(400).json({ error: error.errors.map(e => e.message) });
-    } else {
-      res.status(500).json({ error: error.message });
-    }
-  }
-};
-
-
 exports.updateProject = async (req, res) => {
   try {
-    const { name, languages, history } = req.body;
+    const { name, languages, history, urls, strings } = req.body;
     const project = await Project.findByPk(req.params.id);
     if (!project) {
       return res.status(404).json({ error: 'Project not found' });
     }
     await project.update({ name, languages, history });
+
+    // Add URLs to the project if provided
+    if (urls && urls.length > 0) {
+      for (const urlId of urls) {
+        const url = await URL.findByPk(urlId);
+        if (url) {
+          await project.addUrl(url);
+        } else {
+          const newUrl = await URL.create({ id: urlId, url: urlId });
+          await project.addUrl(newUrl);
+        }
+      }
+    }
+
+    // Add strings to the project if provided
+    if (strings && strings.length > 0) {
+      for (const stringId of strings) {
+        const string = await String.findByPk(stringId);
+        if (string) {
+          await project.addString(string);
+        } else {
+          const newString = await String.create({ id: stringId, eng_us: '', fr: '', de: '' });
+          await project.addString(newString);
+        }
+      }
+    }
+
     res.status(200).json(project);
   } catch (error) {
     res.status(500).json({ error: error.message });

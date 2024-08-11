@@ -1,0 +1,19 @@
+  <div>
+    <h2>{{ isEditMode ? 'Edit String' : 'Add String' }}</h2>
+    <form [formGroup]="stringForm" (ngSubmit)="onSubmit()">
+      <div>
+        <label for="eng_us">English:</label>
+        <input type="text" id="eng_us" formControlName="eng_us" required>
+      </div>
+      <div>
+        <label for="fr">French:</label>
+        <input type="text" id="fr" formControlName="fr" required>
+      </div>
+      <div>
+        <label for="de">German:</label>
+        <input type="text" id="de" formControlName="de" required>
+      </div>
+      <button type="submit">{{ isEditMode ? 'Update' : 'Create' }}</button>
+    </form>
+  </div>
+  

@@ -4,17 +4,49 @@
 
 <div *ngIf="project">
   <h2>{{ project.name }}</h2>
-  <p><strong>Languages:</strong> {{ project.languages | json }}</p>
   
-  <h3>Users</h3>
-  <ul>
-    <li *ngFor="let user of project.users">{{ user.username }}</li>
-  </ul>
+  <h3>URLs</h3>
+  <button [routerLink]="['/urls/new']">Add URL</button>
+  <table>
+    <thead>
+      <tr>
+        <th>URL</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let url of project.urls">
+        <td>{{ url.url }}</td>
+        <td>
+          <button [routerLink]="['/urls/edit', url.id]">Edit</button>
+          <button (click)="deleteUrl(url.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
   
   <h3>Strings</h3>
-  <ul>
-    <li *ngFor="let string of project.strings">
-      {{ string.eng_us }} (EN), {{ string.fr }} (FR), {{ string.de }} (DE)
-    </li>
-  </ul>
+  <!-- <p><strong>Strings/Languages:</strong> {{ project.languages | json }}</p> -->
+  <button [routerLink]="['/strings/new']">Add String</button>
+  <table>
+    <thead>
+      <tr>
+        <th>English</th>
+        <th>French</th>
+        <th>German</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let string of project.strings">
+        <td>{{ string.eng_us }}</td>
+        <td>{{ string.fr }}</td>
+        <td>{{ string.de }}</td>
+        <td>
+          <button [routerLink]="['/strings/edit', string.id]">Edit</button>
+          <button (click)="deleteString(string.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>

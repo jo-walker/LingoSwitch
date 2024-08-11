@@ -8,10 +8,10 @@ module.exports = (sequelize) => {
       autoIncrement: true,
     },
     urlId: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.STRING(4),
       allowNull: true,
       references: {
-        model: 'URLs',
+        model: 'urls',
         key: 'id',
       },
     },
@@ -31,15 +31,15 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
-        model: 'Users',
+        model: 'users',
         key: 'id',
       },
     },
     projectId: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.STRING(5),
       allowNull: true,
       references: {
-        model: 'Projects',
+        model: 'projects',
         key: 'id',
       },
     },
@@ -50,6 +50,12 @@ module.exports = (sequelize) => {
   }, {
     timestamps: false,
   });
+
+  String.associate = (models) => {
+    String.belongsTo(models.Project, { foreignKey: 'projectId', as: 'project' });
+    String.belongsTo(models.URL, { foreignKey: 'urlId', as: 'url' });
+    String.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
+  };
 
   return String;
 };

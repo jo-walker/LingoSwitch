@@ -1,29 +1,32 @@
-const Sequelize = require('sequelize');
 const sequelize = require('../config/database');
+const ProjectModel = require('./Project');
+const URLModel = require('./URL');
+const StringModel = require('./String');
+const UserModel = require('./User');
+const ProjectUserModel = require('./ProjectUser');
 
-const User = require('./User')(sequelize);
-const Project = require('./Project')(sequelize);
-const URL = require('./URL')(sequelize);
-const String = require('./String')(sequelize);
-const ProjectUser = require('./ProjectUser')(sequelize);
+const Project = ProjectModel(sequelize);
+const URL = URLModel(sequelize);
+const String = StringModel(sequelize);
+const User = UserModel(sequelize);
+const ProjectUser = ProjectUserModel(sequelize);
 
-Project.hasMany(URL, { foreignKey: 'projectId', as: 'urls' });
-Project.hasMany(String, { foreignKey: 'projectId', as: 'strings' });
-User.hasMany(String, { foreignKey: 'userId', as: 'strings' });
-URL.hasMany(String, { foreignKey: 'urlId', as: 'strings' });
+Project.associate({ URL, String, User });
+URL.associate({ Project, String });
+String.associate({ Project, URL, User });
+User.associate({ Project, String });
+// ProjectUser.associate({ Project, User });
 
-URL.belongsTo(Project, { foreignKey: 'projectId', as: 'project' });
-String.belongsTo(Project, { foreignKey: 'projectId', as: 'project' });
-String.belongsTo(URL, { foreignKey: 'urlId', as: 'url' });
-String.belongsTo(User, { foreignKey: 'userId', as: 'user' });
-
-sequelize.sync();
+sequelize.sync()
+  .then(() => {
+    console.log('Database & tables created!');
+  });
 
 module.exports = {
-  User,
   Project,
   URL,
   String,
+  User,
   ProjectUser,
-  sequelize
+  sequelize,
 };

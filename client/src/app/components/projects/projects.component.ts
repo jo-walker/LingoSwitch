@@ -16,7 +16,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   loadProjects(): void {
-    this.projectService.getProjects().subscribe(
+    this.projectService.getAllProjects().subscribe(
       data => {
         this.projects = data;
       },

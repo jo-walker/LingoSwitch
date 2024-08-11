@@ -20,7 +20,7 @@ export class StringsComponent implements OnInit {
   }
 
   loadStrings(): void {
-    this.stringService.getStringsByUrl(window.location.pathname).subscribe(
+    this.stringService.getStringsByProjectId(this.projectId).subscribe(
       data => {
         this.strings = data;
       },
@@ -38,7 +38,7 @@ export class StringsComponent implements OnInit {
   onSubmit(): void {
     const urls = this.urlsInput.split(',').map(url => url.trim());
     if (this.selectedString) {
-      this.stringService.updateString(this.selectedKey, this.selectedString.values, urls).subscribe(
+      this.stringService.updateString(this.selectedString.id, { values: this.selectedString.values, urls }).subscribe(
         response => {
           console.log('String updated:', response);
           this.loadStrings(); // Refresh the list of strings after updating
@@ -50,19 +50,15 @@ export class StringsComponent implements OnInit {
     }
   }
 
-  deleteString(): void {
-    if (this.selectedString) {
-      this.stringService.deleteString(this.selectedKey).subscribe(
-        response => {
-          console.log('String marked as deleted:', response);
-          this.loadStrings(); // Refresh the list of strings after marking one as deleted
-          this.selectedString = null;
-          this.selectedKey = '';
-        },
-        error => {
-          console.error('Error deleting string', error);
-        }
-      );
-    }
+  deleteString(id: string): void {
+    this.stringService.deleteString(id).subscribe(
+      response => {
+        console.log('String deleted:', response);
+        this.loadStrings(); // Refresh the list of strings after deletion
+      },
+      error => {
+        console.error('Error deleting string', error);
+      }
+    );
   }
 }
