@@ -2,21 +2,21 @@ const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
   const ProjectUser = sequelize.define('ProjectUser', {
-    ProjectId: {
+    projectId: {
       type: DataTypes.STRING(5),
-      primaryKey: true,
+      primaryKey: true,  // Part of the composite primary key
       references: {
-        model: 'Projects',
+        model: 'projects',
         key: 'id',
       },
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE',
     },
-    UserId: {
+    userId: {
       type: DataTypes.INTEGER,
-      primaryKey: true,
+      primaryKey: true,  // Part of the composite primary key
       references: {
-        model: 'Users',
+        model: 'users',
         key: 'id',
       },
       onUpdate: 'CASCADE',
@@ -28,6 +28,7 @@ module.exports = (sequelize) => {
     },
   }, {
     timestamps: false,
+    tableName: 'ProjectUsers',
   });
 
   return ProjectUser;

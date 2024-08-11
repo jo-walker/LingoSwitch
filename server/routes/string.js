@@ -1,11 +1,10 @@
+// routes/string.js
 const express = require('express');
-const router = express.Router();
 const stringController = require('../controllers/stringController');
+const router = express.Router();
 
-// Define routes
-router.get('/', stringController.getStrings);
-router.get('/:id', stringController.getStringById);
 router.post('/', stringController.createString);
+router.get('/:id', stringController.getStringById); 
 router.put('/:id', stringController.updateString);
 router.delete('/:id', stringController.deleteString);
 

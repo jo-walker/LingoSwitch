@@ -1,0 +1,11 @@
+  <div>
+    <h2>{{ isEditMode ? 'Edit URL' : 'Add URL' }}</h2>
+    <form [formGroup]="urlForm" (ngSubmit)="onSubmit()">
+      <div>
+        <label for="url">URL:</label>
+        <input type="text" id="url" formControlName="url" required>
+      </div>
+      <button type="submit">{{ isEditMode ? 'Update' : 'Create' }}</button> 
+    </form>
+  </div>
+  

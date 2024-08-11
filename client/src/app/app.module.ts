@@ -14,11 +14,18 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { ProjectsComponent } from './components/projects/projects.component';
 import { ProjectFormComponent } from './components/project-form/project-form.component';
-import { StringsComponent } from './components/strings/strings.component'; // Add the StringsComponent
+import { StringsComponent } from './components/strings/strings.component'; // StringsComponent
 import { AuthGuard } from './guards/auth.guard';
 import { AuthInterceptor } from './interceptors/auth.interceptors';
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
+import { UrlsComponent } from './components/urls/urls.component';
 
+// Import your services
+import { ProjectService } from './services/project.service';
+import { StringService } from './services/string.service';
+import { UrlService } from './services/url.service';
+import { UrlFormComponent } from './components/url-form/url-form.component';
+import { StringFormComponent } from './components/string-form/string-form.component';
 
 @NgModule({
   declarations: [
@@ -26,9 +33,11 @@ import { ProjectDetailsComponent } from './components/project-details/project-de
     LoginComponent,
     ProjectsComponent,
     ProjectFormComponent,
-    StringsComponent, // t
-    ProjectDetailsComponent
-    
+    StringsComponent,
+    StringFormComponent,
+    ProjectDetailsComponent, 
+    UrlsComponent,
+    UrlFormComponent
 
   ],
   imports: [

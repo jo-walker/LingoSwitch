@@ -7,7 +7,7 @@ module.exports = (sequelize) => {
       primaryKey: true,
     },
     url: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
       allowNull: false,
     },
     history: {
@@ -18,7 +18,7 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING(5),
       allowNull: true,
       references: {
-        model: 'Projects',
+        model: 'projects',
         key: 'id',
       },
       onUpdate: 'CASCADE',
@@ -27,6 +27,12 @@ module.exports = (sequelize) => {
   }, {
     timestamps: false,
   });
+
+  URL.associate = (models) => {
+    URL.belongsTo(models.Project, { foreignKey: { name: 'projectId', allowNull: true, references: { model: 'projects', key: 'id' } }, as: 'project' });
+    URL.hasMany(models.String, { foreignKey: 'urlId', as: 'strings' });
+  };
+  
 
   return URL;
 };

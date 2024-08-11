@@ -1,14 +1,41 @@
-<div class="project-form-container">
-  <h2>{{ projectId ? 'Edit Project' : 'Add Project' }}</h2>
-  <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
-    <div>
-      <label for="name">Project Name</label>
-      <input id="name" formControlName="name" required>
-    </div>
-    <div>
-      <label for="languages">Languages (comma separated)</label>
-      <input id="languages" formControlName="languages" required>
-    </div>
-    <button type="submit">{{ projectId ? 'Update' : 'Create' }}</button>
-  </form>
+<div *ngIf="error" class="error">
+  {{ error }}
 </div>
+
+<form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="name">Project Name:</label>
+    <input type="text" id="name" formControlName="name" required>
+  </div>
+  <div>
+    <label for="languages">Languages (comma separated):</label>
+    <input type="text" id="languages" formControlName="languages" required>
+  </div>
+  <div>
+    <label for="urls">Select URLs:</label>
+    <select formControlName="selectedUrls" multiple>
+      <option *ngFor="let url of availableUrls" [value]="url.id">{{ url.url }}</option>
+    </select>
+    <button type="button" (click)="showAddUrlForm = !showAddUrlForm">Add New URL</button>
+    <div *ngIf="showAddUrlForm">
+      <input type="text" [(ngModel)]="newUrl" placeholder="Enter new URL">
+      <button type="button" (click)="addNewUrl()">Add</button>
+    </div>
+  </div>
+  <div>
+    <label for="strings">Select Strings:</label>
+    <select formControlName="selectedStrings" multiple>
+      <option *ngFor="let string of availableStrings" [value]="string.id">
+        {{ string.eng_us }} (EN), {{ string.fr }} (FR), {{ string.de }} (DE)
+      </option>
+    </select>
+    <button type="button" (click)="showAddStringForm = !showAddStringForm">Add New String</button>
+    <div *ngIf="showAddStringForm">
+      <input type="text" [(ngModel)]="newStringEn" placeholder="Enter new English string">
+      <input type="text" [(ngModel)]="newStringFr" placeholder="Enter new French string">
+      <input type="text" [(ngModel)]="newStringDe" placeholder="Enter new German string">
+      <button type="button" (click)="addNewString()">Add</button>
+    </div>
+  </div>
+  <button type="submit">{{ isEditMode ? 'Update' : 'Create' }} Project</button>
+</form>
