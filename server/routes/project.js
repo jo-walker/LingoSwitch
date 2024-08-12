@@ -12,7 +12,7 @@ router.put('/:id', projectController.updateProject);
 router.delete('/:id', projectController.deleteProject);
 
 // Separate routes for URLs and strings
-router.post('/urls', urlController.createUrl);
+router.post('/urls', urlController.createUrl); 
 router.post('/strings', stringController.createString);
 
 module.exports = router;
