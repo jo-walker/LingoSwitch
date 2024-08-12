@@ -1,6 +1,6 @@
 const sequelize = require('../config/database');
 const ProjectModel = require('./Project');
-const URLModel = require('./URL');
+const URLModel = require('./URL.js'); 
 const StringModel = require('./String');
 const UserModel = require('./User');
 const ProjectUserModel = require('./ProjectUser');
