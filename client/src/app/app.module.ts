@@ -26,6 +26,7 @@ import { StringService } from './services/string.service';
 import { UrlService } from './services/url.service';
 import { UrlFormComponent } from './components/url-form/url-form.component';
 import { StringFormComponent } from './components/string-form/string-form.component';
+import { RegisterComponent } from './components/register/register.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { StringFormComponent } from './components/string-form/string-form.compon
     StringFormComponent,
     ProjectDetailsComponent, 
     UrlsComponent,
-    UrlFormComponent
+    UrlFormComponent,
+    RegisterComponent
 
   ],
   imports: [
