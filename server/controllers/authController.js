@@ -25,6 +25,7 @@ exports.register = async (req, res) => {
     res.status(500).json({ message: 'Server error', error });
   }
 };
+
 exports.login = async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -48,6 +49,7 @@ exports.login = async (req, res) => {
 
     res.json({ token });
   } catch (error) {
+    console.error('Error during user login:', error); // Log the actual error
     res.status(500).json({ message: 'Server error', error });
   }
 };

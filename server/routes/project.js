@@ -3,16 +3,16 @@ const router = express.Router();
 const projectController = require('../controllers/projectController');
 const urlController = require('../controllers/urlController');
 const stringController = require('../controllers/stringController');
-
+const authMiddleware = require('../middleware/authMiddleware');
 // Define routes
-router.get('/', projectController.getAllProjects); //getting all projects
-router.get('/:id', projectController.getProjectById);
-router.post('/', projectController.createProjectWithStrings);
-router.put('/:id', projectController.updateProject);
-router.delete('/:id', projectController.deleteProject);
+router.get('/', authMiddleware, projectController.getAllProjects); //getting all projects
+router.get('/:id', authMiddleware, projectController.getProjectById);
+router.post('/', authMiddleware, projectController.createProjectWithStrings);
+router.put('/:id', authMiddleware, projectController.updateProject);
+router.delete('/:id', authMiddleware, projectController.deleteProject);
 
 // Separate routes for URLs and strings
-router.post('/urls', urlController.createUrl); 
-router.post('/strings', stringController.createString);
+router.post('/urls', authMiddleware, urlController.createUrl); 
+router.post('/strings', authMiddleware, stringController.createString);
 
 module.exports = router;
