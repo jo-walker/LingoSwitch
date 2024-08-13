@@ -17,10 +17,18 @@ exports.getAllProjects = async (req, res) => {
 exports.createProjectWithStrings = async (req, res) => {
   const { name, languages, history, urls, strings } = req.body; // Removed 'id' from destructuring
   try {
-    // Create the project without passing 'id'
-    const project = await Project.create({ name, languages, history });
+    const createdBy = req.user.username; // record the user who created the project
 
-    if (urls && urls.length > 0) {
+    // Create the project with the history including createdBy and createdAt
+    const project = await Project.create({
+      name,
+      languages,
+      history: JSON.stringify({
+        createdBy: createdBy,
+        createdAt: new Date().toISOString()
+      })
+    });
+    if (urls && urls.length > 0) { // Add URLs to the project if provided
       for (const urlId of urls) {
         const url = await URL.findByPk(urlId);
         if (url) {
@@ -32,7 +40,7 @@ exports.createProjectWithStrings = async (req, res) => {
       }
     }
 
-    if (strings && strings.length > 0) {
+    if (strings && strings.length > 0) { // Add strings to the project if provided
       for (const stringId of strings) {
         const string = await String.findByPk(stringId);
         if (string) {
@@ -67,13 +75,25 @@ exports.getProjectById = async (req, res) => {
 
 exports.updateProject = async (req, res) => {
   try {
-    const { name, languages, history, urls, strings } = req.body;
+    const { name, languages, urls, strings } = req.body;
     const project = await Project.findByPk(req.params.id);
     if (!project) {
       return res.status(404).json({ error: 'Project not found' });
     }
-    await project.update({ name, languages, history });
+    // Update the project and include updatedBy and updatedAt in the history
+    const updatedBy = req.user.username;
 
+    // Parse the history JSON string to an object
+    const history = JSON.parse(project.history);
+
+    history.updatedBy = updatedBy;
+    history.updatedAt = new Date().toISOString();
+
+    await project.update({
+      name,
+      languages,
+      history: JSON.stringify(history)
+    });
     // Add URLs to the project if provided
     if (urls && urls.length > 0) {
       for (const urlId of urls) {

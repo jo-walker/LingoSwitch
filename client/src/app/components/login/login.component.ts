@@ -13,6 +13,7 @@ export class LoginComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
+// In LoginComponent
   login() {
     this.authService.login(this.username, this.password).subscribe(
       response => {
