@@ -7,25 +7,26 @@ import { UrlsComponent } from './components/urls/urls.component';
 import { UrlFormComponent } from './components/url-form/url-form.component';
 import { StringsComponent } from './components/strings/strings.component';
 import { StringFormComponent } from './components/string-form/string-form.component';
-
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import { AuthGuard } from './guards/auth.guard';  // Import the AuthGuard
 
 const routes: Routes = [
-  // { path: '', redirectTo: '/projects', pathMatch: 'full' },
-  // { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] },
-  // { path: 'projects/new', component: ProjectFormComponent, canActivate: [AuthGuard] },
-  // { path: 'projects/edit/:id', component: ProjectFormComponent, canActivate: [AuthGuard] }
-
-  { path: '', redirectTo: '/projects', pathMatch: 'full' },
-  { path: 'projects', component: ProjectsComponent },
-  { path: 'projects/new', component: ProjectFormComponent },
-  { path: 'projects/edit/:id', component: ProjectFormComponent },
-  { path: 'projects/:id', component: ProjectDetailsComponent },
-  { path: 'urls', component: UrlsComponent },
-  { path: 'urls/new', component: UrlFormComponent },
-  { path: 'urls/edit/:id', component: UrlFormComponent },
-  { path: 'strings', component: StringsComponent },
-  { path: 'strings/new', component: StringFormComponent },
-  { path: 'strings/edit/:id', component: StringFormComponent },];
+  { path: '', redirectTo: '/login', pathMatch: 'full' },  // Redirect to login if no other route matches
+  { path: 'login', component: LoginComponent },  // Route for the login component
+  { path: 'register', component: RegisterComponent },  // Route for the register component
+  { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] },  // Protect these routes
+  { path: 'projects/new', component: ProjectFormComponent, canActivate: [AuthGuard] },
+  { path: 'projects/edit/:id', component: ProjectFormComponent, canActivate: [AuthGuard] },
+  { path: 'projects/:id', component: ProjectDetailsComponent, canActivate: [AuthGuard] },
+  { path: 'urls', component: UrlsComponent, canActivate: [AuthGuard] },
+  { path: 'urls/new', component: UrlFormComponent, canActivate: [AuthGuard] },
+  { path: 'urls/edit/:id', component: UrlFormComponent, canActivate: [AuthGuard] },
+  { path: 'strings', component: StringsComponent, canActivate: [AuthGuard] },
+  { path: 'strings/new', component: StringFormComponent, canActivate: [AuthGuard] },
+  { path: 'strings/edit/:id', component: StringFormComponent, canActivate: [AuthGuard] },
+  { path: '**', redirectTo: '/login', pathMatch: 'full' }  // Redirect to login for any unmatched routes
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
