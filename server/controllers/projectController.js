@@ -1,5 +1,4 @@
 const { Project, String, URL } = require('../models');
-// const Project = require('../models/Project');
 
 exports.getAllProjects = async (req, res) => {
   try {
@@ -13,21 +12,18 @@ exports.getAllProjects = async (req, res) => {
   }
 };
 
-
 exports.createProjectWithStrings = async (req, res) => {
-  const { name, languages, history, urls, strings } = req.body; // Removed 'id' from destructuring
+  const { name, languages, urls, strings } = req.body;
   try {
-    const createdBy = req.user.username; // record the user who created the project
+    const createdBy = req.user?.username || 'unknown'; // record the user who created the project
+    const history = JSON.stringify({
+      createdBy: createdBy,
+      createdAt: new Date().toISOString()
+    });
 
     // Create the project with the history including createdBy and createdAt
-    const project = await Project.create({
-      name,
-      languages,
-      history: JSON.stringify({
-        createdBy: createdBy,
-        createdAt: new Date().toISOString()
-      })
-    });
+    const project = await Project.create({ name, languages, history });
+
     if (urls && urls.length > 0) { // Add URLs to the project if provided
       for (const urlId of urls) {
         const url = await URL.findByPk(urlId);
@@ -80,11 +76,10 @@ exports.updateProject = async (req, res) => {
     if (!project) {
       return res.status(404).json({ error: 'Project not found' });
     }
-    // Update the project and include updatedBy and updatedAt in the history
-    const updatedBy = req.user.username;
+    const updatedBy = req.user?.username || 'unknown';
 
     // Parse the history JSON string to an object
-    const history = JSON.parse(project.history);
+    const history = JSON.parse(project.history || '{}');
 
     history.updatedBy = updatedBy;
     history.updatedAt = new Date().toISOString();
@@ -94,6 +89,7 @@ exports.updateProject = async (req, res) => {
       languages,
       history: JSON.stringify(history)
     });
+
     // Add URLs to the project if provided
     if (urls && urls.length > 0) {
       for (const urlId of urls) {
