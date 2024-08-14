@@ -6,14 +6,18 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UrlService {
-  private baseUrl = 'http://localhost:5000/api/urls';
+  private baseUrl = 'http://localhost:3000/api/urls';
 
   constructor(private http: HttpClient) {}
 
-  getUrlsByProjectId(projectId: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/by-project/${projectId}`);
-  }
+  // getUrlsByProjectId(projectId: string): Observable<any> {
+  //   return this.http.get(`${this.baseUrl}/by-project/${projectId}`);
+  // }
 
+  getUrlsByProjectId(projectId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}?projectId=${projectId}`);
+  }
+  
   getUrl(id: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/${id}`);
   }
@@ -29,4 +33,9 @@ export class UrlService {
   deleteUrl(id: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
+
+  getAllUrls(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}`);
+  }
+  
 }

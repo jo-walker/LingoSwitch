@@ -9,9 +9,6 @@ import { StringService } from '../../services/string.service';
 export class StringsComponent implements OnInit {
   @Input() projectId!: string;
   strings: any[] = [];
-  selectedKey: string = '';
-  selectedString: any = null;
-  urlsInput: string = '';
 
   constructor(private stringService: StringService) {}
 
@@ -20,7 +17,7 @@ export class StringsComponent implements OnInit {
   }
 
   loadStrings(): void {
-    this.stringService.getStringsByProjectId(this.projectId).subscribe(
+    this.stringService.getAllStrings().subscribe(
       data => {
         this.strings = data;
       },
@@ -28,26 +25,6 @@ export class StringsComponent implements OnInit {
         console.error('Error fetching strings', error);
       }
     );
-  }
-
-  loadString(): void {
-    this.selectedString = this.strings.find(s => s.key === this.selectedKey) || null;
-    this.urlsInput = this.selectedString ? this.selectedString.urls.join(', ') : '';
-  }
-
-  onSubmit(): void {
-    const urls = this.urlsInput.split(',').map(url => url.trim());
-    if (this.selectedString) {
-      this.stringService.updateString(this.selectedString.id, { values: this.selectedString.values, urls }).subscribe(
-        response => {
-          console.log('String updated:', response);
-          this.loadStrings(); // Refresh the list of strings after updating
-        },
-        error => {
-          console.error('Error updating string', error);
-        }
-      );
-    }
   }
 
   deleteString(id: string): void {

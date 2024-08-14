@@ -1,5 +1,31 @@
 {
+  "name": "lingo-switch-backend",
+  "version": "1.0.0",
+  "description": "Backend for LingoSwitch",
+  "main": "app.js",
+  "scripts": {
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && node app.js",
+    "client": "cd client && ng serve"
+  },
   "dependencies": {
-    "uuid": "^10.0.0"
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-mongo-sanitize": "^2.2.0",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "lingo-switch-backend": "file:",
+    "mongoose": "^5.13.22",
+    "mysql2": "^3.10.3",
+    "sequelize": "^6.37.3",
+    "uuid": "^10.0.0",
+    "xss-clean": "^0.1.4"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
   }
 }
