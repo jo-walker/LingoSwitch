@@ -1,6 +1,4 @@
-<div class="strings-container">
-  <h3>Strings</h3>
-  <button [routerLink]="['/strings/new', { projectId: projectId }]">Add String</button>
+<div *ngIf="strings && strings.length > 0; else noStrings">
   <table>
     <thead>
       <tr>
@@ -23,3 +21,6 @@
     </tbody>
   </table>
 </div>
+<ng-template #noStrings>
+  <p>No strings found.</p>
+</ng-template>

@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProjectService } from '../../services/project.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
+// import { AuthService } from '../../services/auth.service';
+// import { create } from 'domain';
 @Component({
   selector: 'app-project-form',
   templateUrl: './project-form.component.html',
@@ -25,13 +26,14 @@ export class ProjectFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private projectService: ProjectService,
+    // private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute
   ) {
     this.projectForm = this.fb.group({
       name: ['', Validators.required],
       languages: ['', Validators.required],
-      selectedUrls: [[], Validators.required],
+      selectedUrls: [[], Validators.required], // this array stores the selected URL IDs from the dropdown 
       selectedStrings: [[], Validators.required]
     });
   }
@@ -128,15 +130,24 @@ export class ProjectFormComponent implements OnInit {
   }
 
   onSubmit(): void {
+    // const currentUser = this.authService.getCurrentUser() as { username: string }; // this returns the logged-in user
+    // if (!currentUser) {
+    //   console.error('No user logged in');
+    //   this.error = 'No user logged in';
+    //   return;
+    // }
+    console.log(this.projectForm.value);  // Log the form value to see what's being submitted
+
     const project = {
       name: this.projectForm.get('name')?.value,
       languages: this.projectForm.get('languages')?.value.split(',').map((lang: string) => lang.trim()),
-      urls: this.projectForm.get('selectedUrls')?.value,
-      strings: this.projectForm.get('selectedStrings')?.value,
-      history: {
-        createdAt: new Date().toISOString(),
-        createdBy: 'admin'
-      }
+      urls: this.projectForm.get('selectedUrls')?.value,  // This should be an array
+      strings: this.projectForm.get('selectedStrings')?.value,  // This should be an array
+      // history: {
+      //   createdAt: new Date().toISOString(),
+      //   // createdBy: currentUser ? currentUser.username : 'unknown' // Use logged-in user's name
+      //   createdBy: currentUser.username // Use the dummy user or handle accordingly
+      // }
     };
 
     if (this.isEditMode && this.projectId) {

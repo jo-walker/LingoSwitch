@@ -13,14 +13,15 @@ exports.createUrl = async (req, res) => {
 
 exports.getUrls = async (req, res) => {
   try {
-    console.log('Available methods on URL model:', Object.keys(URL));
     const urls = await URL.findAll();
-    res.status(200).json(urls);
+    console.log('Fetched URLs:', urls); // to log the fetched URLs
+    res.json(urls);
   } catch (error) {
     console.error('Error fetching URLs:', error);
-    res.status(500).json({ error: 'Unable to fetch URLs' });
+    res.status(500).json({ error: 'An error occurred while fetching URLs' });
   }
 };
+
 
 exports.getUrlById = async (req, res) => {
   try {

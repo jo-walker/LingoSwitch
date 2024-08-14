@@ -15,7 +15,7 @@ exports.getAllProjects = async (req, res) => {
 exports.createProjectWithStrings = async (req, res) => {
   const { name, languages, urls, strings } = req.body;
   try {
-    const createdBy = req.user?.username || 'unknown'; // record the user who created the project
+    const createdBy = req.user?.username || 'unknown'; // get the username from the token
     const history = JSON.stringify({
       createdBy: createdBy,
       createdAt: new Date().toISOString()

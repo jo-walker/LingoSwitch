@@ -26,8 +26,8 @@ export class AuthService {
     return !!localStorage.getItem('token');
   }
 
-  getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token');
-    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
-  }
+  // getAuthHeaders(): HttpHeaders {
+  //   const token = localStorage.getItem('token');
+  //   return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  // }
 }

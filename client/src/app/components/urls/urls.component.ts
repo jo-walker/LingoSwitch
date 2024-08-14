@@ -13,12 +13,15 @@ export class UrlsComponent implements OnInit {
   constructor(private urlService: UrlService) {}
 
   ngOnInit(): void {
+    console.log('Project ID:', this.projectId); 
     this.loadUrls();
   }
-
+  
   loadUrls(): void {
-    this.urlService.getUrlsByProjectId(this.projectId).subscribe(
+    this.urlService.getAllUrls().subscribe( // To-Do: don't use deprecated functions
+      
       data => {
+        console.log('Fetched URLs:', data); // Log the fetched URLs
         this.urls = data;
       },
       error => {
@@ -26,6 +29,18 @@ export class UrlsComponent implements OnInit {
       }
     );
   }
+  
+  //   this.urlService.getUrlsByProjectId(this.projectId).subscribe(
+  //     data => {
+  //       console.log('Fetched URLs:', data); // Log the fetched data
+
+  //       this.urls = data;
+  //     },
+  //     error => {
+  //       console.error('Error fetching URLs', error);
+  //     }
+  //   );
+  // }
 
   deleteUrl(id: string): void {
     this.urlService.deleteUrl(id).subscribe(

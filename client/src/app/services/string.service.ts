@@ -6,16 +6,19 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class StringService {
-  private baseUrl = 'http://localhost:5000/api/strings';
+  private baseUrl = 'http://localhost:3000/api/strings';
 
   constructor(private http: HttpClient) {}
 
   getStringsByProjectId(projectId: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/by-project/${projectId}`);
   }
-
   getString(id: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/${id}`);
+  }
+
+  getAllStrings(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}`);
   }
 
   createString(string: any): Observable<any> {

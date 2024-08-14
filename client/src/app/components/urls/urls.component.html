@@ -1,21 +1,22 @@
-<div class="urls-container">
-    <h3>URLs</h3>
-    <button [routerLink]="['/urls/new', { projectId: projectId }]">Add URL</button>
-    <table>
-      <thead>
-        <tr>
-          <th>URL</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let url of urls">
-          <td>{{ url.url }}</td>
-          <td>
-            <button [routerLink]="['/urls/edit', url.id]">Edit</button>
-            <button (click)="deleteUrl(url.id)">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>  
+<div *ngIf="urls && urls.length > 0; else noUrls">
+  <table>
+    <thead>
+      <tr>
+        <th>URL</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let url of urls">
+        <td>{{ url.url }}</td>
+        <td>
+          <button [routerLink]="['/urls/edit', url.id]">Edit</button>
+          <button (click)="deleteUrl(url.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<ng-template #noUrls>
+  <p>No URLs found.</p>
+</ng-template>
