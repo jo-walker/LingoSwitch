@@ -1,57 +1,83 @@
-<div *ngIf="error" class="error">
-  {{ error }}
-</div>
+<div class="project-form-container">
+  <h2>{{ isEditMode ? 'Edit Project' : 'Create Project' }}</h2>
 
-<form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
-  <div>
-    <label for="name">Project Name:</label>
-    <input type="text" id="name" formControlName="name" required>
+  <!-- Success and Error Messages -->
+  <div *ngIf="successMessage" class="alert alert-success">
+    {{ successMessage }}
   </div>
-  <div>
-    <label for="languages">Languages (comma separated):</label>
-    <input type="text" id="languages" formControlName="languages" required>
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
   </div>
+
+  <!-- Project Form -->
+  <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="name">Project Name:</label>
+      <input type="text" id="name" formControlName="name" required>
+      <!-- Inline Validation Error -->
+      <div *ngIf="projectForm.get('name')?.invalid && projectForm.get('name')?.touched" class="validation-error">
+        Project name is required.
+      </div>
+    </div>
+
+    <div>
+      <label for="languages">Languages (comma separated):</label>
+      <input type="text" id="languages" formControlName="languages" required>
+      <div *ngIf="projectForm.get('languages')?.invalid && projectForm.get('languages')?.touched" class="validation-error">
+        Languages are required.
+      </div>
+    </div>
+
+    <!-- URL Selection -->
+    <div class="form-group">
+      <label for="urls">Select URLs:</label>
+      <ng-select
+        [items]="availableUrls"
+        bindLabel="url"
+        bindValue="id"
+        formControlName="selectedUrls"
+        [multiple]="true"
+        placeholder="Select URLs"
+      ></ng-select>
   
-  <!-- ng-select for URLs -->
-  <div>
-    <label for="urls">Select URLs:</label>
-    <ng-select 
-      [items]="availableUrls" 
-      bindLabel="url" 
-      bindValue="id" 
-      formControlName="selectedUrls" 
-      [multiple]="true"
-      placeholder="Select URLs">
-    </ng-select>
-    <button type="button" (click)="showAddUrlForm = !showAddUrlForm">Add New URL</button>
-    <div *ngIf="showAddUrlForm">
-      <input type="text" formControlName="newUrl" placeholder="Enter new URL">
-      <button type="button" (click)="addNewUrl()">Add</button>
+      <button type="button" class="add-url-button" (click)="toggleAddUrlForm()">Add New URL</button>
+  
+      <div *ngIf="showAddUrlForm">
+        <input type="text" formControlName="newUrl" placeholder="Enter new URL">
+        <button type="button" (click)="addNewUrl()">Add</button>
+      </div>
     </div>
-  </div>
 
-  <!-- ng-select for Strings -->
-  <div>
-    <label for="strings">Select Strings:</label>
-    <ng-select 
-      [items]="availableStrings" 
-      bindLabel="eng_us" 
-      bindValue="id" 
-      formControlName="selectedStrings" 
-      [multiple]="true"
-      placeholder="Select Strings">
-      <ng-template ng-label-tmp let-item="item">
-        {{ item.eng_us }} (EN), {{ item.fr }} (FR), {{ item.de }} (DE)
-      </ng-template>
-    </ng-select>
-    <button type="button" (click)="showAddStringForm = !showAddStringForm">Add New String</button>
-    <div *ngIf="showAddStringForm">
-      <input type="text" formControlName="newStringEn" placeholder="Enter new English string">
-      <input type="text" formControlName="newStringFr" placeholder="Enter new French string">
-      <input type="text" formControlName="newStringDe" placeholder="Enter new German string">
-      <button type="button" (click)="addNewString()">Add</button>
+    <!-- String Selection -->
+    <div class="form-group">
+      <label for="strings">Select Strings:</label>
+      <ng-select
+        [items]="availableStrings"
+        bindLabel="eng_us"
+        bindValue="id"
+        formControlName="selectedStrings"
+        [multiple]="true"
+        placeholder="Select Strings"
+      >
+        <ng-template ng-label-tmp let-item="item">
+          {{ item.eng_us }} (EN), {{ item.fr }} (FR), {{ item.de }} (DE)
+        </ng-template>
+      </ng-select>
+  
+      <button type="button" class="add-string-button" (click)="toggleAddStringForm()">Add New String</button>
+  
+      <div *ngIf="showAddStringForm">
+        <input type="text" formControlName="newStringEn" placeholder="Enter new English string">
+        <input type="text" formControlName="newStringFr" placeholder="Enter new French string">
+        <input type="text" formControlName="newStringDe" placeholder="Enter new German string">
+        <button type="button" (click)="addNewString()">Add</button>
+      </div>
     </div>
-  </div>
 
-  <button type="submit">{{ isEditMode ? 'Update' : 'Create' }} Project</button>
-</form>
+    <!-- Submit Button with Loading Indicator -->
+    <button type="submit" [disabled]="projectForm.invalid || isLoading">
+      <span *ngIf="!isLoading">{{ isEditMode ? 'Update Project' : 'Create Project' }}</span>
+      <span *ngIf="isLoading">Submitting...</span>
+    </button>
+  </form>
+</div>

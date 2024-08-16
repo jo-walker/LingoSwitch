@@ -4,13 +4,10 @@ const Project = require('../models/Project')(sequelize); // Add this line to imp
 
 exports.createUrl = async (req, res) => {
   try {
-    // Ensure the project exists
-    const project = await Project.findByPk(req.body.projectId);
-    if (!project) {
-      return res.status(404).json({ error: 'Project not found' });
-    }
+    // Ensure the project exists (if required)
+    const project = req.body.projectId ? await Project.findByPk(req.body.projectId) : null;
 
-    // Fetch the latest URL record by ID
+    // Fetch the latest URL record by ID for ID generation (same logic as before)
     const latestUrl = await URL.findOne({
       order: [['id', 'DESC']]
     });
@@ -18,21 +15,24 @@ exports.createUrl = async (req, res) => {
     // Generate new ID in Uxxx format
     let newId;
     if (latestUrl) {
-      const latestIdNumber = parseInt(latestUrl.id.slice(1)); // Extract number part from "Uxxx"
-      if (latestIdNumber >= 999) {
-        return res.status(400).json({ error: 'Maximum number of URLs reached (U999)' });
-      }
-      const incrementedId = (latestIdNumber + 1).toString().padStart(3, '0'); // Increment and pad to 3 digits
-      newId = `U${incrementedId}`;
+      const latestIdNumber = parseInt(latestUrl.id.slice(1));
+      newId = `U${(latestIdNumber + 1).toString().padStart(3, '0')}`;
     } else {
-      newId = 'U001'; // If no URLs exist, start with U001
+      newId = 'U001';
     }
 
+    // Capture creation history
+    const history = {
+      action: 'created',
+      createdBy: req.body.createdBy,
+      createdAt: new Date(),
+    };
     // Create the new URL
     const newUrl = await URL.create({
       id: newId,
       url: req.body.url,
-      projectId: req.body.projectId
+      projectId: req.body.projectId || null, // Nullable for general URLs
+      history: [history], // Store initial creation history
     });
 
     res.status(201).json(newUrl);
@@ -41,6 +41,7 @@ exports.createUrl = async (req, res) => {
     res.status(500).json({ error: 'Unable to create URL' });
   }
 };
+
 
 
 exports.getUrls = async (req, res) => {
@@ -54,27 +55,44 @@ exports.getUrls = async (req, res) => {
   }
 };
 
-
 exports.getUrlById = async (req, res) => {
   try {
     const url = await URL.findByPk(req.params.id);
     if (!url) {
       return res.status(404).json({ error: 'URL not found' });
     }
-    res.status(200).json(url);
+
+    // Parse the history JSON field
+    const history = url.history ? JSON.parse(url.history) : [];
+
+    res.status(200).json({ url, history });
   } catch (error) {
     console.error('Error fetching URL by ID:', error);
     res.status(500).json({ error: 'Unable to fetch URL' });
   }
 };
-
 exports.updateUrl = async (req, res) => {
   try {
     const url = await URL.findByPk(req.params.id);
     if (!url) {
       return res.status(404).json({ error: 'URL not found' });
     }
-    await url.update(req.body);
+
+    // Add previous version to the history
+    const updatedHistory = url.history || [];
+    updatedHistory.push({
+      action: 'updated',
+      oldUrl: url.url,
+      updatedBy: req.body.createdBy, // Store the user who updated the URL
+      updatedAt: new Date(),
+    });
+
+    // Update the URL and history
+    await url.update({
+      url: req.body.url,
+      history: updatedHistory,
+    });
+
     res.status(200).json(url);
   } catch (error) {
     console.error('Error updating URL:', error);

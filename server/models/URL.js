@@ -32,7 +32,7 @@ module.exports = (sequelize) => {
     timestamps: false,
   });
 
-  console.log('This is my model ---', URL);
+  // console.log('This is my model ---', URL);
 
   // Ensure associations are defined
   URL.associate = (models) => {

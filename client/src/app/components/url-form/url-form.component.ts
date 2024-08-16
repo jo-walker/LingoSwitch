@@ -1,7 +1,8 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { UrlService } from '../../services/url.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-url-form',
@@ -9,7 +10,6 @@ import { UrlService } from '../../services/url.service';
   styleUrls: ['./url-form.component.scss']
 })
 export class UrlFormComponent implements OnInit {
-  @Input() projectId!: string;
   @Output() urlChange: EventEmitter<void> = new EventEmitter();
 
   urlForm: FormGroup;
@@ -22,13 +22,14 @@ export class UrlFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private urlService: UrlService,
+    private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute
   ) {
     this.urlForm = this.fb.group({
       url: ['', [Validators.required, Validators.pattern('https?://.+')]]
     });
-  }
+  }    
 
   ngOnInit(): void {
     this.urlId = this.route.snapshot.paramMap.get('id');
@@ -52,23 +53,22 @@ export class UrlFormComponent implements OnInit {
       }
     });
   }
-
   onSubmit(): void {
     if (this.urlForm.invalid) return;
-
+  
     this.isLoading = true;
     const urlData = {
       url: this.urlForm.get('url')?.value,
-      projectId: this.projectId
+      createdBy: this.authService.getCurrentUserId(), // Send user ID
     };
-
+  
     if (this.isEditMode && this.urlId) {
       this.urlService.updateUrl(this.urlId, urlData).subscribe({
         next: (response) => {
           this.successMessage = 'URL updated successfully.';
           this.isLoading = false;
           this.urlChange.emit();
-          setTimeout(() => this.router.navigate(['/projects', this.projectId]), 2000); // Delay for success message
+          setTimeout(() => this.router.navigate(['/urls']), 2000); // Navigate to URLs list
         },
         error: (error) => {
           this.errorMessage = 'Error updating URL.';
@@ -81,7 +81,7 @@ export class UrlFormComponent implements OnInit {
           this.successMessage = 'URL created successfully.';
           this.isLoading = false;
           this.urlChange.emit();
-          setTimeout(() => this.router.navigate(['/projects', this.projectId]), 2000); // Delay for success message
+          setTimeout(() => this.router.navigate(['/urls']), 2000); // Navigate to URLs list
         },
         error: (error) => {
           this.errorMessage = 'Error creating URL.';
@@ -89,5 +89,5 @@ export class UrlFormComponent implements OnInit {
         }
       });
     }
-  }
-}
+  }  
+}  

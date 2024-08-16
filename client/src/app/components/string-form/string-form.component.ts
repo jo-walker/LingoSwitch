@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StringService } from '../../services/string.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-string-form',
@@ -20,6 +21,7 @@ export class StringFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private stringService: StringService,
+    private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute
   ) {
@@ -60,20 +62,22 @@ export class StringFormComponent implements OnInit {
       this.setErrorMessage('Please fill out the form correctly.');
       return;
     }
-
+  
     const stringData = {
       eng_us: this.stringForm.get('eng_us')?.value,
       fr: this.stringForm.get('fr')?.value,
       de: this.stringForm.get('de')?.value,
-      projectId: this.projectId
+      projectId: this.projectId,
+      userId: this.authService.getCurrentUserId(), // Add userId for history tracking
     };
-
+  
     if (this.isEditMode && this.stringId) {
       this.updateString(stringData);
     } else {
       this.createString(stringData);
     }
   }
+  
 
   updateString(stringData: any): void {
     this.stringService.updateString(this.stringId!, stringData).subscribe({

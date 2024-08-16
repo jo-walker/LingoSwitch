@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProjectService } from '../../services/project.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-project-form',
@@ -17,10 +18,14 @@ export class ProjectFormComponent implements OnInit {
   showAddUrlForm = false;
   showAddStringForm = false;
   error: string | null = null;
+  isLoading = false;  // loading state
+  errorMessage: string | null = null;  // error message
+  successMessage: string | null = null;  // success message
 
   constructor(
     private fb: FormBuilder,
     private projectService: ProjectService,
+    private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute
   ) {
@@ -49,6 +54,7 @@ export class ProjectFormComponent implements OnInit {
   }
 
   loadProject(): void {
+    this.isLoading = true; // set loading state to true before making the request
     this.projectService.getProject(this.projectId!).subscribe({
       next: (project) => {
         this.projectForm.patchValue({
@@ -57,10 +63,12 @@ export class ProjectFormComponent implements OnInit {
           selectedUrls: project.urls ? project.urls.map((url: any) => url.id) : [],
           selectedStrings: project.strings ? project.strings.map((string: any) => string.id) : [],
         });
+        this.isLoading = false; // after request is completed, stop the loading state
       },
       error: (error) => {
         console.error('Error loading project:', error);
-        this.error = 'Error loading project';
+        this.isLoading = false; // stop loading state on error
+        setTimeout(() => this.errorMessage = null, 3000);  // Auto-hide error message
       }
     });
   }
@@ -72,10 +80,11 @@ export class ProjectFormComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading URLs:', error);
-        this.error = 'Error loading URLs';
+        this.errorMessage = 'Error loading URLs.';
+        setTimeout(() => this.errorMessage = null, 3000);
       }
     });
-  }
+  }  
 
   loadAvailableStrings(): void {
     this.projectService.getStrings().subscribe({
@@ -83,8 +92,8 @@ export class ProjectFormComponent implements OnInit {
         this.availableStrings = strings || [];
       },
       error: (error) => {
-        console.error('Error loading strings:', error);
-        this.error = 'Error loading strings';
+        this.errorMessage= 'Error loading strings:';
+        setTimeout(() => this.errorMessage = null, 3000); 
       }
     });
   }
@@ -105,15 +114,19 @@ export class ProjectFormComponent implements OnInit {
           this.projectForm.controls['selectedUrls'].setValue([...currentSelectedUrls, response.id]);
           this.projectForm.get('newUrl')?.reset();
           this.showAddUrlForm = false;
+          this.successMessage = 'URL added successfully.';
+          setTimeout(() => this.successMessage = null, 3000);
         },
         error: (error) => {
           console.error('Error adding URL:', error);
-          this.error = `Error adding URL: ${error.message || 'Unknown error'}`;
+          this.errorMessage = `Error adding URL: ${error.status === 404 ? 'URL endpoint not found' : error.message}`;
+          setTimeout(() => this.errorMessage = null, 3000);
         }
       });
+      
     } else {
-      console.error('Invalid URL: URL is empty or contains only whitespace.');
-      this.error = 'Please provide a valid URL.';
+      this.errorMessage = 'Please provide a valid URL.';
+      setTimeout(() => this.errorMessage = null, 3000);  // Auto-hide error message
     }
   }
 
@@ -139,41 +152,72 @@ export class ProjectFormComponent implements OnInit {
           this.showAddStringForm = false;
         },
         error: (error) => {
-          console.error('Error adding string:', error);
-          this.error = 'Error adding string';
+          this.errorMessage = 'Error adding string.';
+          setTimeout(() => this.errorMessage = null, 3000);  // Auto-hide error message
         }
       });
     }
   }
-
   onSubmit(): void {
-    const project = {
+    if (this.projectForm.invalid) return;
+  
+    this.isLoading = true;
+  
+    const userId = this.authService.getCurrentUserId(); 
+  
+    const project: any = {
       name: this.projectForm.get('name')?.value,
       languages: this.projectForm.get('languages')?.value.split(',').map((lang: string) => lang.trim()),
       urls: this.projectForm.get('selectedUrls')?.value,
       strings: this.projectForm.get('selectedStrings')?.value,
+      updatedBy: userId,  // Always set updatedBy
     };
-
+  
+    // Only set createdBy when creating a new project
+    if (!this.isEditMode) {
+      project.createdBy = userId;
+    }
+  
     if (this.isEditMode && this.projectId) {
       this.projectService.updateProject(this.projectId, project).subscribe({
         next: () => {
-          this.router.navigate(['/projects']);
+          this.successMessage = 'Project updated successfully.';
+          this.isLoading = false;
+          setTimeout(() => {
+            this.successMessage = null;
+            this.router.navigate(['/projects']);
+          }, 3000);
         },
         error: (error) => {
-          console.error('Error updating project:', error);
-          this.error = 'Error updating project';
+          this.errorMessage = 'Error updating project.';
+          this.isLoading = false;
         }
       });
     } else {
       this.projectService.createProjectWithStrings(project).subscribe({
         next: () => {
-          this.router.navigate(['/projects']);
+          this.successMessage = 'Project created successfully.';
+          this.isLoading = false;
+          setTimeout(() => {
+            this.successMessage = null;
+            this.router.navigate(['/projects']);
+          }, 3000);
         },
         error: (error) => {
-          console.error('Error creating project with strings:', error);
-          this.error = 'Error creating project with strings';
+          this.errorMessage = 'Error creating project.';
+          this.isLoading = false;
         }
       });
     }
+  }
+  
+  
+
+  toggleAddUrlForm(): void {
+    this.showAddUrlForm = !this.showAddUrlForm;
+  }
+
+  toggleAddStringForm(): void {
+    this.showAddStringForm = !this.showAddStringForm;
   }
 }
