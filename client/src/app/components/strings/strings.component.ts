@@ -4,7 +4,7 @@ import { StringService } from '../../services/string.service';
 @Component({
   selector: 'app-strings',
   templateUrl: './strings.component.html',
-  styleUrls: ['./strings.component.css']
+  styleUrls: ['./strings.component.scss']
 })
 export class StringsComponent implements OnInit {
   @Input() projectId!: string;

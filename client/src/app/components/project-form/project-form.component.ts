@@ -2,12 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProjectService } from '../../services/project.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-// import { AuthService } from '../../services/auth.service';
-// import { create } from 'domain';
+
 @Component({
   selector: 'app-project-form',
   templateUrl: './project-form.component.html',
-  styleUrls: ['./project-form.component.css']
+  styleUrls: ['./project-form.component.scss'],
 })
 export class ProjectFormComponent implements OnInit {
   projectForm: FormGroup;
@@ -16,25 +15,24 @@ export class ProjectFormComponent implements OnInit {
   availableUrls: any[] = [];
   availableStrings: any[] = [];
   showAddUrlForm = false;
-  newUrl = '';
   showAddStringForm = false;
-  newStringEn = '';
-  newStringFr = '';
-  newStringDe = '';
   error: string | null = null;
 
   constructor(
     private fb: FormBuilder,
     private projectService: ProjectService,
-    // private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute
   ) {
     this.projectForm = this.fb.group({
       name: ['', Validators.required],
       languages: ['', Validators.required],
-      selectedUrls: [[], Validators.required], // this array stores the selected URL IDs from the dropdown 
-      selectedStrings: [[], Validators.required]
+      selectedUrls: [[], Validators.required],
+      selectedStrings: [[], Validators.required],
+      newUrl: [''], // Add this form control for new URLs
+      newStringEn: [''], // Add this form control for new English string
+      newStringFr: [''], // Add this form control for new French string
+      newStringDe: ['']  // Add this form control for new German string
     });
   }
 
@@ -86,39 +84,75 @@ export class ProjectFormComponent implements OnInit {
       }
     );
   }
-
   addNewUrl(): void {
-    if (this.newUrl.trim()) {
-      this.projectService.createUrl({ url: this.newUrl }).subscribe(
-        url => {
-          this.availableUrls.push(url);
-          this.projectForm.controls['selectedUrls'].setValue([...this.projectForm.controls['selectedUrls'].value, url.id]);
-          this.newUrl = '';
+    // Get the new URL value from the form
+    const newUrlValue = this.projectForm.get('newUrl')?.value;
+  
+    // Ensure the URL value is not empty or invalid
+    if (newUrlValue && newUrlValue.trim()) {
+      console.log('Sending URL:', { url: newUrlValue }); // Log the payload
+  
+      // Construct the payload with the URL and optionally the project ID if needed
+      const newUrlPayload = {
+        url: newUrlValue,
+        projectId: this.projectId // Make sure this.projectId is defined and holds the correct value
+      };
+  
+      // Call the service to create the URL
+      this.projectService.createUrl(newUrlPayload).subscribe(
+        (response: any) => {
+          console.log('Successfully added URL:', response); // Log the successful response
+          
+          // Update the availableUrls array with the new URL object from the response
+          this.availableUrls.push(response);
+  
+          // Update the selectedUrls form control with the new URL's ID
+          const currentSelectedUrls = this.projectForm.controls['selectedUrls'].value || [];
+          this.projectForm.controls['selectedUrls'].setValue([...currentSelectedUrls, response.id]);
+  
+          // Reset the new URL input field
+          this.projectForm.get('newUrl')?.reset();
+  
+          // Hide the add URL form
           this.showAddUrlForm = false;
         },
-        error => {
+        (error) => {
+          // Log detailed error information in case of failure
           console.error('Error adding URL:', error);
-          this.error = 'Error adding URL';
+  
+          // Display a user-friendly error message
+          this.error = `Error adding URL: ${error.message || 'Unknown error'}`;
         }
       );
+    } else {
+      // Log and handle the case where the URL value is invalid
+      console.error('Invalid URL: URL is empty or contains only whitespace.');
+      this.error = 'Please provide a valid URL.';
     }
   }
+  
+  
+  
 
   addNewString(): void {
-    const newString = {
-      eng_us: this.newStringEn,
-      fr: this.newStringFr,
-      de: this.newStringDe
-    };
+    const newStringEn = this.projectForm.get('newStringEn')?.value;
+    const newStringFr = this.projectForm.get('newStringFr')?.value;
+    const newStringDe = this.projectForm.get('newStringDe')?.value;
 
-    if (this.newStringEn.trim() || this.newStringFr.trim() || this.newStringDe.trim()) {
+    if (newStringEn.trim() || newStringFr.trim() || newStringDe.trim()) {
+      const newString = {
+        eng_us: newStringEn,
+        fr: newStringFr,
+        de: newStringDe
+      };
+
       this.projectService.createString(newString).subscribe(
         string => {
           this.availableStrings.push(string);
           this.projectForm.controls['selectedStrings'].setValue([...this.projectForm.controls['selectedStrings'].value, string.id]);
-          this.newStringEn = '';
-          this.newStringFr = '';
-          this.newStringDe = '';
+          this.projectForm.get('newStringEn')?.reset();
+          this.projectForm.get('newStringFr')?.reset();
+          this.projectForm.get('newStringDe')?.reset();
           this.showAddStringForm = false;
         },
         error => {
@@ -130,30 +164,16 @@ export class ProjectFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    // const currentUser = this.authService.getCurrentUser() as { username: string }; // this returns the logged-in user
-    // if (!currentUser) {
-    //   console.error('No user logged in');
-    //   this.error = 'No user logged in';
-    //   return;
-    // }
-    console.log(this.projectForm.value);  // Log the form value to see what's being submitted
-
     const project = {
       name: this.projectForm.get('name')?.value,
       languages: this.projectForm.get('languages')?.value.split(',').map((lang: string) => lang.trim()),
-      urls: this.projectForm.get('selectedUrls')?.value,  // This should be an array
-      strings: this.projectForm.get('selectedStrings')?.value,  // This should be an array
-      // history: {
-      //   createdAt: new Date().toISOString(),
-      //   // createdBy: currentUser ? currentUser.username : 'unknown' // Use logged-in user's name
-      //   createdBy: currentUser.username // Use the dummy user or handle accordingly
-      // }
+      urls: this.projectForm.get('selectedUrls')?.value,
+      strings: this.projectForm.get('selectedStrings')?.value,
     };
 
     if (this.isEditMode && this.projectId) {
       this.projectService.updateProject(this.projectId, project).subscribe(
         response => {
-          console.log('Project updated:', response);
           this.router.navigate(['/projects']);
         },
         error => {
@@ -164,7 +184,6 @@ export class ProjectFormComponent implements OnInit {
     } else {
       this.projectService.createProjectWithStrings(project).subscribe(
         response => {
-          console.log('Project created with strings:', response);
           this.router.navigate(['/projects']);
         },
         error => {

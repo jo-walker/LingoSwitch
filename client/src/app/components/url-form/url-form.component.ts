@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UrlService } from '../../services/url.service';
@@ -6,12 +6,14 @@ import { UrlService } from '../../services/url.service';
 @Component({
   selector: 'app-url-form',
   templateUrl: './url-form.component.html',
-  styleUrls: ['./url-form.component.css']
+  styleUrls: ['./url-form.component.scss']
 })
 export class UrlFormComponent implements OnInit {
+  @Input() projectId!: string;
+  @Output() urlChange: EventEmitter<void> = new EventEmitter();
+
   urlForm: FormGroup;
   isEditMode: boolean = false;
-  projectId: string | null = null;
   urlId: string | null = null;
 
   constructor(
@@ -26,7 +28,6 @@ export class UrlFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.projectId = this.route.snapshot.paramMap.get('projectId');
     this.urlId = this.route.snapshot.paramMap.get('id');
     this.isEditMode = !!this.urlId;
 
@@ -55,6 +56,7 @@ export class UrlFormComponent implements OnInit {
         this.urlService.updateUrl(this.urlId, urlData).subscribe(
           response => {
             console.log('URL updated:', response);
+            this.urlChange.emit(); // Emit event after updating
             this.router.navigate(['/projects', this.projectId]);
           },
           error => {
@@ -65,6 +67,7 @@ export class UrlFormComponent implements OnInit {
         this.urlService.createUrl(urlData).subscribe(
           response => {
             console.log('URL created:', response);
+            this.urlChange.emit(); // Emit event after creating
             this.router.navigate(['/projects', this.projectId]);
           },
           error => {

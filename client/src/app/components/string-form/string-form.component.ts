@@ -6,7 +6,7 @@ import { StringService } from '../../services/string.service';
 @Component({
   selector: 'app-string-form',
   templateUrl: './string-form.component.html',
-  styleUrls: ['./string-form.component.css']
+  styleUrls: ['./string-form.component.scss']
 })
 export class StringFormComponent implements OnInit {
   stringForm: FormGroup;

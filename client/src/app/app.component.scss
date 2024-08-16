@@ -1,0 +1,45 @@
+.app-container {
+  background-color: var(--white);
+  padding: 20px;
+}
+
+.navbar {
+  background-color: var(--moonstone);
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 15px;
+}
+
+.navbar ul li {
+  display: inline;
+}
+
+.navbar ul li a {
+  color: var(--white);
+  text-decoration: none;
+  padding: 10px 20px;
+  background-color: var(--blue-green);
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.navbar ul li a:hover {
+  background-color: var(--pale-azure);
+}
+
+.navbar ul li a pButton {
+  background-color: var(--blue-green);
+  color: var(--white);
+}
+
+.navbar ul li a pButton:hover {
+  background-color: var(--pale-azure);
+}

@@ -4,7 +4,7 @@ import { UrlService } from '../../services/url.service';
 @Component({
   selector: 'app-urls',
   templateUrl: './urls.component.html',
-  styleUrls: ['./urls.component.css']
+  styleUrls: ['./urls.component.scss']
 })
 export class UrlsComponent implements OnInit {
   @Input() projectId!: string;
@@ -16,10 +16,10 @@ export class UrlsComponent implements OnInit {
     console.log('Project ID:', this.projectId); 
     this.loadUrls();
   }
-  
+
+  // Load the URLs based on the project ID
   loadUrls(): void {
-    this.urlService.getAllUrls().subscribe( // To-Do: don't use deprecated functions
-      
+    this.urlService.getUrlsByProjectId(this.projectId).subscribe(
       data => {
         console.log('Fetched URLs:', data); // Log the fetched URLs
         this.urls = data;
@@ -29,19 +29,8 @@ export class UrlsComponent implements OnInit {
       }
     );
   }
-  
-  //   this.urlService.getUrlsByProjectId(this.projectId).subscribe(
-  //     data => {
-  //       console.log('Fetched URLs:', data); // Log the fetched data
 
-  //       this.urls = data;
-  //     },
-  //     error => {
-  //       console.error('Error fetching URLs', error);
-  //     }
-  //   );
-  // }
-
+  // Method to delete a URL
   deleteUrl(id: string): void {
     this.urlService.deleteUrl(id).subscribe(
       response => {
@@ -52,5 +41,10 @@ export class UrlsComponent implements OnInit {
         console.error('Error deleting URL', error);
       }
     );
+  }
+
+  // This method will be called when a URL is created or updated
+  onUrlChange(): void {
+    this.loadUrls(); // Reload URLs after a change
   }
 }

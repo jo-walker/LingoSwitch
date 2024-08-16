@@ -1,26 +1,41 @@
-<div *ngIf="strings && strings.length > 0; else noStrings">
-  <table>
-    <thead>
-      <tr>
-        <th>English</th>
-        <th>French</th>
-        <th>German</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let string of strings">
-        <td>{{ string.eng_us }}</td>
-        <td>{{ string.fr }}</td>
-        <td>{{ string.de }}</td>
-        <td>
-          <button [routerLink]="['/strings/edit', string.id]">Edit</button>
-          <button (click)="deleteString(string.id)">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<div class="string-list-container">
+  <button pButton label="Add String" class="p-button-info" routerLink="/strings/new"></button>
+
+  <div *ngIf="strings && strings.length > 0; else noStrings">
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>English</th>
+          <th>French</th>
+          <th>German</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let string of strings">
+          <td>{{ string.eng_us }}</td>
+          <td>{{ string.fr }}</td>
+          <td>{{ string.de }}</td>
+          <td>
+            <button pButton 
+                    label="Edit" 
+                    icon="pi pi-pencil" 
+                    class="p-button-info" 
+                    [routerLink]="['/strings/edit', string.id]">
+            </button>
+            <button pButton 
+                    label="Delete" 
+                    icon="pi pi-trash" 
+                    class="p-button-danger ml-2" 
+                    (click)="deleteString(string.id)">
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #noStrings>
+    <p>No strings found.</p>
+  </ng-template>
 </div>
-<ng-template #noStrings>
-  <p>No strings found.</p>
-</ng-template>

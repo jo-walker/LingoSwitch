@@ -21,6 +21,9 @@
     "lingo-switch-backend": "file:",
     "mongoose": "^5.13.22",
     "mysql2": "^3.10.3",
+    "primeflex": "^3.3.1",
+    "primeicons": "^7.0.0",
+    "primeng": "^17.18.9",
     "sequelize": "^6.37.3",
     "uuid": "^10.0.0",
     "xss-clean": "^0.1.4"

@@ -11,31 +11,47 @@
     <label for="languages">Languages (comma separated):</label>
     <input type="text" id="languages" formControlName="languages" required>
   </div>
+  
+  <!-- ng-select for URLs -->
   <div>
     <label for="urls">Select URLs:</label>
-    <select formControlName="selectedUrls" multiple>
-      <option *ngFor="let url of availableUrls" [value]="url.id">{{ url.url }}</option>
-    </select>
+    <ng-select 
+      [items]="availableUrls" 
+      bindLabel="url" 
+      bindValue="id" 
+      formControlName="selectedUrls" 
+      [multiple]="true"
+      placeholder="Select URLs">
+    </ng-select>
     <button type="button" (click)="showAddUrlForm = !showAddUrlForm">Add New URL</button>
     <div *ngIf="showAddUrlForm">
-      <input type="text" [(ngModel)]="newUrl" placeholder="Enter new URL">
+      <input type="text" formControlName="newUrl" placeholder="Enter new URL">
       <button type="button" (click)="addNewUrl()">Add</button>
     </div>
   </div>
+
+  <!-- ng-select for Strings -->
   <div>
     <label for="strings">Select Strings:</label>
-    <select formControlName="selectedStrings" multiple>
-      <option *ngFor="let string of availableStrings" [value]="string.id">
-        {{ string.eng_us }} (EN), {{ string.fr }} (FR), {{ string.de }} (DE)
-      </option>
-    </select>
+    <ng-select 
+      [items]="availableStrings" 
+      bindLabel="eng_us" 
+      bindValue="id" 
+      formControlName="selectedStrings" 
+      [multiple]="true"
+      placeholder="Select Strings">
+      <ng-template ng-label-tmp let-item="item">
+        {{ item.eng_us }} (EN), {{ item.fr }} (FR), {{ item.de }} (DE)
+      </ng-template>
+    </ng-select>
     <button type="button" (click)="showAddStringForm = !showAddStringForm">Add New String</button>
     <div *ngIf="showAddStringForm">
-      <input type="text" [(ngModel)]="newStringEn" placeholder="Enter new English string">
-      <input type="text" [(ngModel)]="newStringFr" placeholder="Enter new French string">
-      <input type="text" [(ngModel)]="newStringDe" placeholder="Enter new German string">
+      <input type="text" formControlName="newStringEn" placeholder="Enter new English string">
+      <input type="text" formControlName="newStringFr" placeholder="Enter new French string">
+      <input type="text" formControlName="newStringDe" placeholder="Enter new German string">
       <button type="button" (click)="addNewString()">Add</button>
     </div>
   </div>
+
   <button type="submit">{{ isEditMode ? 'Update' : 'Create' }} Project</button>
 </form>
