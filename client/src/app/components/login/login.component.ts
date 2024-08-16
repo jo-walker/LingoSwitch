@@ -18,7 +18,8 @@ export class LoginComponent {
     this.authService.login(this.username, this.password).subscribe({
       next: (response) => {
         localStorage.setItem('token', response.token);
-        this.router.navigate(['/projects']);
+        localStorage.setItem('userId', response.userId);  // Store only the user ID
+        this.router.navigate(['/projects']);// Redirect to the projects page after login
         this.error = null; // Clear the error message if login is successful
       },
       error: (error) => {

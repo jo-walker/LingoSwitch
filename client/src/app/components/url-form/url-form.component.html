@@ -19,20 +19,21 @@
         formControlName="url" 
         required 
         aria-required="true" 
-        aria-describedby="urlHelp urlError"
         [class.invalid]="urlForm.get('url')?.invalid && urlForm.get('url')?.touched"
       />
-      <div id="urlHelp" class="form-text">
+      <!-- Helper text -->
+      <div *ngIf="urlForm.get('url')?.touched && urlForm.get('url')?.hasError('pattern')" class="form-text">
         Enter a valid URL.
       </div>
-      <div id="urlError" *ngIf="urlForm.get('url')?.invalid && urlForm.get('url')?.touched" class="validation-error">
+      <!-- Error message for required field -->
+      <div *ngIf="urlForm.get('url')?.touched && urlForm.get('url')?.hasError('required')" class="validation-error">
         URL is required.
       </div>
     </div>
 
     <!-- Loading Spinner -->
     <div *ngIf="isLoading" class="loading-spinner">
-      <img src="loading-spinner.gif" alt="Loading...">
+      <img src="../../../styles/loading-spinner.gif" alt="Loading...">
     </div>
 
     <!-- Submit Button -->
