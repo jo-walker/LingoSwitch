@@ -77,29 +77,29 @@ Request Body:
 
 ## Handling Requirements
 ### Central Repository of Strings
-##### Implementation: Developed a backend API to manage strings, allowing for CRUD operations on string entries.
+- Developed a backend API to manage strings, allowing for CRUD operations on string entries.
 - Details: Strings are stored in a relational database, enabling updates and retrievals without code recompilation.
 ### Project Management
-#### Implementation: Created a table structure to manage multiple projects, including user access control.
+- Created a table structure to manage multiple projects, including user access control.
 - Details: Each project has associated users with role-based access to the string repository. Implemented authentication with username and password protection.
 ### Languages and Key-Naming
-#### Implementation: Implemented a table for language definitions and used automatic key-naming for string entries.
+- Implemented a table for language definitions and used automatic key-naming for string entries.
 - Details: Keys are generated in the format S_1, S_2, etc., and are associated with multiple languages. This allows for a common reference key for different language translations.
 - Example: For the string “First Name,” the key S_1 maps to “Prenom” in French.
 ### URL Association
-#### Implementation: Added functionality to track and associate strings with specific URLs.
+- Implementation: Added functionality to track and associate strings with specific URLs.
 - Details: Each string can be tagged with one or more URLs where it is used, ensuring consistent use across different pages and components.
 ### String Editing and URL Management
-#### Implementation: Developed an interface for editing strings and managing URL associations.
+- Implementation: Developed an interface for editing strings and managing URL associations.
 - Details: The GUI allows users to update string translations and link multiple URLs to a single key, ensuring consistent string usage across all related pages.
 ### Search and View Strings
-#### Implementation: Implemented a searchable interface in the GUI for viewing and finding strings by language.
+- Implementation: Implemented a searchable interface in the GUI for viewing and finding strings by language.
 - Details: Users can search by language and key to quickly locate and manage strings. Added filters to streamline the search process.
 ### Key Management
-#### Implementation: Ensured that keys are permanent and not deprecated.
+- Implementation: Ensured that keys are permanent and not deprecated.
 - Details: Once a key is created, it remains in the database, ensuring that historical data is preserved and references remain valid.
 ### Bonus – Modification Tracking
-#### Implementation: Added functionality to track modifications, including timestamps and user details.
+- Implementation: Added functionality to track modifications, including timestamps and user details.
 - Details: Implemented an audit trail that records when and by whom each string was modified, providing transparency and accountability.
 
 ## Contributing
