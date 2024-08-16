@@ -29,10 +29,10 @@ export class ProjectFormComponent implements OnInit {
       languages: ['', Validators.required],
       selectedUrls: [[], Validators.required],
       selectedStrings: [[], Validators.required],
-      newUrl: [''], // Add this form control for new URLs
-      newStringEn: [''], // Add this form control for new English string
-      newStringFr: [''], // Add this form control for new French string
-      newStringDe: ['']  // Add this form control for new German string
+      newUrl: [''],
+      newStringEn: [''],
+      newStringFr: [''],
+      newStringDe: [''],
     });
   }
 
@@ -41,98 +41,81 @@ export class ProjectFormComponent implements OnInit {
     this.isEditMode = !!this.projectId;
 
     if (this.isEditMode && this.projectId) {
-      this.projectService.getProject(this.projectId).subscribe(
-        project => {
-          this.projectForm.patchValue({
-            name: project.name,
-            languages: project.languages.join(', '),
-            selectedUrls: project.urls ? project.urls.map((url: any) => url.id) : [],
-            selectedStrings: project.strings ? project.strings.map((string: any) => string.id) : []
-          });
-        },
-        error => {
-          console.error('Error loading project:', error);
-          this.error = 'Error loading project';
-        }
-      );
+      this.loadProject();
     }
 
     this.loadAvailableUrls();
     this.loadAvailableStrings();
   }
 
+  loadProject(): void {
+    this.projectService.getProject(this.projectId!).subscribe({
+      next: (project) => {
+        this.projectForm.patchValue({
+          name: project.name,
+          languages: project.languages.join(', '),
+          selectedUrls: project.urls ? project.urls.map((url: any) => url.id) : [],
+          selectedStrings: project.strings ? project.strings.map((string: any) => string.id) : [],
+        });
+      },
+      error: (error) => {
+        console.error('Error loading project:', error);
+        this.error = 'Error loading project';
+      }
+    });
+  }
+
   loadAvailableUrls(): void {
-    this.projectService.getUrls().subscribe(
-      urls => {
+    this.projectService.getUrls().subscribe({
+      next: (urls) => {
         this.availableUrls = urls || [];
       },
-      error => {
+      error: (error) => {
         console.error('Error loading URLs:', error);
         this.error = 'Error loading URLs';
       }
-    );
+    });
   }
 
   loadAvailableStrings(): void {
-    this.projectService.getStrings().subscribe(
-      strings => {
+    this.projectService.getStrings().subscribe({
+      next: (strings) => {
         this.availableStrings = strings || [];
       },
-      error => {
+      error: (error) => {
         console.error('Error loading strings:', error);
         this.error = 'Error loading strings';
       }
-    );
+    });
   }
+
   addNewUrl(): void {
-    // Get the new URL value from the form
     const newUrlValue = this.projectForm.get('newUrl')?.value;
-  
-    // Ensure the URL value is not empty or invalid
+
     if (newUrlValue && newUrlValue.trim()) {
-      console.log('Sending URL:', { url: newUrlValue }); // Log the payload
-  
-      // Construct the payload with the URL and optionally the project ID if needed
       const newUrlPayload = {
         url: newUrlValue,
-        projectId: this.projectId // Make sure this.projectId is defined and holds the correct value
+        projectId: this.projectId
       };
-  
-      // Call the service to create the URL
-      this.projectService.createUrl(newUrlPayload).subscribe(
-        (response: any) => {
-          console.log('Successfully added URL:', response); // Log the successful response
-          
-          // Update the availableUrls array with the new URL object from the response
+
+      this.projectService.createUrl(newUrlPayload).subscribe({
+        next: (response) => {
           this.availableUrls.push(response);
-  
-          // Update the selectedUrls form control with the new URL's ID
           const currentSelectedUrls = this.projectForm.controls['selectedUrls'].value || [];
           this.projectForm.controls['selectedUrls'].setValue([...currentSelectedUrls, response.id]);
-  
-          // Reset the new URL input field
           this.projectForm.get('newUrl')?.reset();
-  
-          // Hide the add URL form
           this.showAddUrlForm = false;
         },
-        (error) => {
-          // Log detailed error information in case of failure
+        error: (error) => {
           console.error('Error adding URL:', error);
-  
-          // Display a user-friendly error message
           this.error = `Error adding URL: ${error.message || 'Unknown error'}`;
         }
-      );
+      });
     } else {
-      // Log and handle the case where the URL value is invalid
       console.error('Invalid URL: URL is empty or contains only whitespace.');
       this.error = 'Please provide a valid URL.';
     }
   }
-  
-  
-  
 
   addNewString(): void {
     const newStringEn = this.projectForm.get('newStringEn')?.value;
@@ -146,8 +129,8 @@ export class ProjectFormComponent implements OnInit {
         de: newStringDe
       };
 
-      this.projectService.createString(newString).subscribe(
-        string => {
+      this.projectService.createString(newString).subscribe({
+        next: (string) => {
           this.availableStrings.push(string);
           this.projectForm.controls['selectedStrings'].setValue([...this.projectForm.controls['selectedStrings'].value, string.id]);
           this.projectForm.get('newStringEn')?.reset();
@@ -155,11 +138,11 @@ export class ProjectFormComponent implements OnInit {
           this.projectForm.get('newStringDe')?.reset();
           this.showAddStringForm = false;
         },
-        error => {
+        error: (error) => {
           console.error('Error adding string:', error);
           this.error = 'Error adding string';
         }
-      );
+      });
     }
   }
 
@@ -172,25 +155,25 @@ export class ProjectFormComponent implements OnInit {
     };
 
     if (this.isEditMode && this.projectId) {
-      this.projectService.updateProject(this.projectId, project).subscribe(
-        response => {
+      this.projectService.updateProject(this.projectId, project).subscribe({
+        next: () => {
           this.router.navigate(['/projects']);
         },
-        error => {
+        error: (error) => {
           console.error('Error updating project:', error);
           this.error = 'Error updating project';
         }
-      );
+      });
     } else {
-      this.projectService.createProjectWithStrings(project).subscribe(
-        response => {
+      this.projectService.createProjectWithStrings(project).subscribe({
+        next: () => {
           this.router.navigate(['/projects']);
         },
-        error => {
+        error: (error) => {
           console.error('Error creating project with strings:', error);
           this.error = 'Error creating project with strings';
         }
-      );
+      });
     }
   }
 }
