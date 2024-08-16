@@ -1,11 +1,43 @@
-  <div>
-    <h2>{{ isEditMode ? 'Edit URL' : 'Add URL' }}</h2>
-    <form [formGroup]="urlForm" (ngSubmit)="onSubmit()">
-      <div>
-        <label for="url">URL:</label>
-        <input type="text" id="url" formControlName="url" required>
-      </div>
-      <button type="submit">{{ isEditMode ? 'Update' : 'Create' }}</button> 
-    </form>
+<div class="url-form-container">
+  <h2>{{ isEditMode ? 'Edit URL' : 'Add URL' }}</h2>
+
+  <!-- Success and error messages -->
+  <div *ngIf="successMessage" class="success-message">
+    {{ successMessage }}
   </div>
-  
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Form -->
+  <form [formGroup]="urlForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="url">URL:</label>
+      <input 
+        type="text" 
+        id="url" 
+        formControlName="url" 
+        required 
+        aria-required="true" 
+        aria-describedby="urlHelp urlError"
+        [class.invalid]="urlForm.get('url')?.invalid && urlForm.get('url')?.touched"
+      />
+      <div id="urlHelp" class="form-text">
+        Enter a valid URL.
+      </div>
+      <div id="urlError" *ngIf="urlForm.get('url')?.invalid && urlForm.get('url')?.touched" class="validation-error">
+        URL is required.
+      </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div *ngIf="isLoading" class="loading-spinner">
+      <img src="loading-spinner.gif" alt="Loading...">
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" [disabled]="isLoading || urlForm.invalid">
+      {{ isEditMode ? 'Update' : 'Create' }}
+    </button>
+  </form>
+</div>

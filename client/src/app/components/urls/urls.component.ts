@@ -19,28 +19,28 @@ export class UrlsComponent implements OnInit {
 
   // Load the URLs based on the project ID
   loadUrls(): void {
-    this.urlService.getUrlsByProjectId(this.projectId).subscribe(
-      data => {
+    this.urlService.getUrlsByProjectId(this.projectId).subscribe({
+      next: (data) => {
         console.log('Fetched URLs:', data); // Log the fetched URLs
         this.urls = data;
       },
-      error => {
+      error: (error) => {
         console.error('Error fetching URLs', error);
       }
-    );
+  });
   }
 
   // Method to delete a URL
   deleteUrl(id: string): void {
-    this.urlService.deleteUrl(id).subscribe(
-      response => {
+    this.urlService.deleteUrl(id).subscribe({
+      next: (response) => {
         console.log('URL deleted:', response);
         this.loadUrls(); // Refresh the list after deletion
       },
-      error => {
+      error: (error) => {
         console.error('Error deleting URL', error);
       }
-    );
+  });
   }
 
   // This method will be called when a URL is created or updated

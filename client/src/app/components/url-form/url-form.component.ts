@@ -15,6 +15,9 @@ export class UrlFormComponent implements OnInit {
   urlForm: FormGroup;
   isEditMode: boolean = false;
   urlId: string | null = null;
+  isLoading: boolean = false; // Loading state
+  successMessage: string | null = null;
+  errorMessage: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -23,7 +26,7 @@ export class UrlFormComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.urlForm = this.fb.group({
-      url: ['', Validators.required]
+      url: ['', [Validators.required, Validators.pattern('https?://.+')]]
     });
   }
 
@@ -32,49 +35,59 @@ export class UrlFormComponent implements OnInit {
     this.isEditMode = !!this.urlId;
 
     if (this.isEditMode && this.urlId) {
-      this.urlService.getUrl(this.urlId).subscribe(
-        url => {
-          this.urlForm.patchValue({
-            url: url.url
-          });
-        },
-        error => {
-          console.error('Error loading URL:', error);
-        }
-      );
+      this.loadUrl();
     }
   }
 
-  onSubmit(): void {
-    if (this.urlForm.valid) {
-      const urlData = {
-        url: this.urlForm.get('url')?.value,
-        projectId: this.projectId
-      };
-
-      if (this.isEditMode && this.urlId) {
-        this.urlService.updateUrl(this.urlId, urlData).subscribe(
-          response => {
-            console.log('URL updated:', response);
-            this.urlChange.emit(); // Emit event after updating
-            this.router.navigate(['/projects', this.projectId]);
-          },
-          error => {
-            console.error('Error updating URL:', error);
-          }
-        );
-      } else {
-        this.urlService.createUrl(urlData).subscribe(
-          response => {
-            console.log('URL created:', response);
-            this.urlChange.emit(); // Emit event after creating
-            this.router.navigate(['/projects', this.projectId]);
-          },
-          error => {
-            console.error('Error creating URL:', error);
-          }
-        );
+  loadUrl(): void {
+    this.isLoading = true;
+    this.urlService.getUrl(this.urlId!).subscribe({
+      next: (url) => {
+        this.urlForm.patchValue({ url: url.url });
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.errorMessage = 'Error loading URL.';
+        this.isLoading = false;
       }
+    });
+  }
+
+  onSubmit(): void {
+    if (this.urlForm.invalid) return;
+
+    this.isLoading = true;
+    const urlData = {
+      url: this.urlForm.get('url')?.value,
+      projectId: this.projectId
+    };
+
+    if (this.isEditMode && this.urlId) {
+      this.urlService.updateUrl(this.urlId, urlData).subscribe({
+        next: (response) => {
+          this.successMessage = 'URL updated successfully.';
+          this.isLoading = false;
+          this.urlChange.emit();
+          setTimeout(() => this.router.navigate(['/projects', this.projectId]), 2000); // Delay for success message
+        },
+        error: (error) => {
+          this.errorMessage = 'Error updating URL.';
+          this.isLoading = false;
+        }
+      });
+    } else {
+      this.urlService.createUrl(urlData).subscribe({
+        next: (response) => {
+          this.successMessage = 'URL created successfully.';
+          this.isLoading = false;
+          this.urlChange.emit();
+          setTimeout(() => this.router.navigate(['/projects', this.projectId]), 2000); // Delay for success message
+        },
+        error: (error) => {
+          this.errorMessage = 'Error creating URL.';
+          this.isLoading = false;
+        }
+      });
     }
   }
 }

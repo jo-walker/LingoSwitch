@@ -138,3 +138,34 @@ form {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
 }
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.invalid {
+  border-color: #f44336; /* Red border for invalid inputs */
+}
+
+.error-message {
+  color: #f44336;
+  background-color: #ffebee;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.success-message {
+  color: #4caf50;
+  background-color: #e8f5e9;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.validation-error {
+  color: #f44336;
+  font-size: 0.9em;
+  margin-top: 5px;
+}

@@ -24,39 +24,45 @@ export class ProjectDetailsComponent implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.projectService.getProject(id).subscribe(
-        project => {
-          this.project = project;
-        },
-        error => {
-          console.error('Error fetching project details:', error);
-          this.error = 'Error fetching project details';
-        }
-      );
+      this.loadProjectDetails(id);
     }
   }
 
+  loadProjectDetails(id: string): void {
+    this.projectService.getProject(id).subscribe({
+      next: (project) => {
+        this.project = project;
+      },
+      error: (error) => {
+        console.error('Error fetching project details:', error);
+        this.error = 'Error fetching project details';
+      }
+    });
+  }
+
   deleteUrl(id: string): void {
-    this.urlService.deleteUrl(id).subscribe(
-      response => {
+    this.urlService.deleteUrl(id).subscribe({
+      next: (response) => {
         console.log('URL deleted:', response);
         this.project.urls = this.project.urls.filter((url: any) => url.id !== id);
       },
-      error => {
-        console.error('Error deleting URL', error);
+      error: (error) => {
+        console.error('Error deleting URL:', error);
+        this.error = 'Error deleting URL';
       }
-    );
+    });
   }
 
   deleteString(id: string): void {
-    this.stringService.deleteString(id).subscribe(
-      response => {
+    this.stringService.deleteString(id).subscribe({
+      next: (response) => {
         console.log('String deleted:', response);
         this.project.strings = this.project.strings.filter((string: any) => string.id !== id);
       },
-      error => {
-        console.error('Error deleting string', error);
+      error: (error) => {
+        console.error('Error deleting string:', error);
+        this.error = 'Error deleting string';
       }
-    );
+    });
   }
 }

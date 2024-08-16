@@ -17,25 +17,25 @@ export class StringsComponent implements OnInit {
   }
 
   loadStrings(): void {
-    this.stringService.getAllStrings().subscribe(
-      data => {
+    this.stringService.getAllStrings().subscribe({
+      next: (data) => {
         this.strings = data;
       },
-      error => {
+      error: (error) => {
         console.error('Error fetching strings', error);
       }
-    );
+  });
   }
 
   deleteString(id: string): void {
-    this.stringService.deleteString(id).subscribe(
-      response => {
+    this.stringService.deleteString(id).subscribe({
+      next: (response) => {
         console.log('String deleted:', response);
         this.loadStrings(); // Refresh the list of strings after deletion
       },
-      error => {
+      error: (error) => {
         console.error('Error deleting string', error);
       }
-    );
+  });
   }
 }

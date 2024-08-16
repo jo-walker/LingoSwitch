@@ -9,32 +9,42 @@ import { ProjectService } from '../../services/project.service';
 export class ProjectsComponent implements OnInit {
   projects: any[] = [];
 
-  constructor(private projectService: ProjectService) { }
+  constructor(private projectService: ProjectService) {}
 
   ngOnInit(): void {
     this.loadProjects();
   }
 
   loadProjects(): void {
-    this.projectService.getAllProjects().subscribe(
-      data => {
+    this.projectService.getAllProjects().subscribe({
+      next: (data) => {
         this.projects = data;
       },
-      error => {
+      error: (error) => {
         console.error('Error fetching projects', error);
+        // Handle error case, for example, by showing a notification
+      },
+      complete: () => {
+        // Optionally handle the completion of the observable
+        console.log('Projects loaded successfully');
       }
-    );
+    });
   }
 
   deleteProject(id: string): void {
-    this.projectService.deleteProject(id).subscribe(
-      response => {
+    this.projectService.deleteProject(id).subscribe({
+      next: (response) => {
         console.log('Project deleted:', response);
         this.loadProjects(); // Refresh the list after deletion
       },
-      error => {
+      error: (error) => {
         console.error('Error deleting project', error);
+        // Handle error case, for example, by showing a notification
+      },
+      complete: () => {
+        // Optionally handle the completion of the observable
+        console.log('Delete operation completed');
       }
-    );
+    });
   }
 }
