@@ -1,22 +1,37 @@
-<div *ngIf="urls && urls.length > 0; else noUrls">
-  <table>
-    <thead>
-      <tr>
-        <th>URL</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let url of urls">
-        <td>{{ url.url }}</td>
-        <td>
-          <button [routerLink]="['/urls/edit', url.id]">Edit</button>
-          <button (click)="deleteUrl(url.id)">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<div class="url-list-container">
+  <app-url-form 
+    [projectId]="projectId"
+    (urlChange)="onUrlChange()">
+  </app-url-form>
+
+  <!-- <button routerLink="/urls/new" pButton label="Add URL" icon="pi pi-plus"></button> -->
+
+  <div *ngIf="urls && urls.length > 0; else noUrls">
+    <div class="urls-grid">
+      <div class="item-card" *ngFor="let url of urls">
+        <p class="item-title">{{ url.url }}</p>
+        <div class="item-actions">
+          <button pButton 
+                  label="Edit" 
+                  icon="pi pi-pencil" 
+                  class="p-button-info" 
+                  [routerLink]="['/urls/edit', url.id]">
+          </button>
+          <button pButton 
+                  label="Delete" 
+                  icon="pi pi-trash" 
+                  class="p-button-danger" 
+                  (click)="deleteUrl(url.id)">
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fallback message when no URLs are available -->
+  <ng-template #noUrls>
+    <div class="no-items">
+      No URLs found.
+    </div>
+  </ng-template>
 </div>
-<ng-template #noUrls>
-  <p>No URLs found.</p>
-</ng-template>

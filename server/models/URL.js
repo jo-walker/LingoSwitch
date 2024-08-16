@@ -1,4 +1,6 @@
 const { DataTypes } = require('sequelize');
+const { v4: uuidv4 } = require('uuid');
+const sequelize = require('../config/database');
 
 module.exports = (sequelize) => {
   const URL = sequelize.define('URL', {
@@ -6,7 +8,7 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING(4),
       primaryKey: true,
       allowNull: false,       
-      // defaultValue: DataTypes.UUIDV4 // Generate a random UUID as the default value
+      defaultValue: () => uuidv4().slice(0, 4) // Generate 4-character ID
     },
     url: {
       type: DataTypes.STRING(255),

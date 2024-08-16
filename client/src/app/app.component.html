@@ -1,5 +1,5 @@
 <div class="app-container">
-  <nav>
+  <nav class="navbar">
     <ul>
       <li *ngIf="authService.isLoggedIn()"><a routerLink="/projects">Projects</a></li>
       <li *ngIf="authService.isLoggedIn()"><a routerLink="/urls">URLs</a></li>
@@ -8,5 +8,7 @@
       <li *ngIf="authService.isLoggedIn()"><a (click)="logout()">Logout</a></li>
     </ul>
   </nav>
-  <router-outlet></router-outlet>
-</div>
+  <div class="layout-content">
+    <router-outlet></router-outlet>
+  </div>
+  </div>

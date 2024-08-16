@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -20,13 +21,17 @@ import { AuthInterceptor } from './interceptors/auth.interceptors';
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 import { UrlsComponent } from './components/urls/urls.component';
 
-// Import your services
+// Import services
 import { ProjectService } from './services/project.service';
 import { StringService } from './services/string.service';
 import { UrlService } from './services/url.service';
 import { UrlFormComponent } from './components/url-form/url-form.component';
 import { StringFormComponent } from './components/string-form/string-form.component';
 import { RegisterComponent } from './components/register/register.component';
+
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
 
 @NgModule({
   declarations: [
@@ -53,7 +58,11 @@ import { RegisterComponent } from './components/register/register.component';
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
-    CommonModule
+    CommonModule,
+    NgSelectModule,
+    TableModule,
+    ButtonModule,
+    InputTextModule
   ],
   providers: [
     AuthGuard,

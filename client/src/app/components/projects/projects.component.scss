@@ -1,0 +1,108 @@
+@import '../../../styles/variables.scss';
+
+.projects-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: $white;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+
+  h2 {
+    font-size: 2rem;
+    color: $blue-green; /* Blue Green for the heading */
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  button {
+    padding: 10px 15px;
+    background-color: $blue-green; /* Blue Green for buttons */
+    border: none;
+    border-radius: $border-radius;
+    color: $white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 5px;
+
+    &:hover {
+      background-color: $ecru; /* Ecru on hover */
+    }
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+
+    li {
+      background-color: $pale-azure; /* Pale Azure background for list items */
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: $border-radius;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: $box-shadow;
+
+      /* Flexbox container for buttons */
+      div {
+        display: flex;
+        gap: 10px; /* Add space between the buttons */
+      }
+
+      p {
+        margin: 0;
+        font-size: 16px;
+        color: $blue-green; /* Blue Green for project names */
+        flex-grow: 1; /* Allow the project name to take available space */
+      }
+
+      button {
+        padding: 8px 12px;
+        background-color: $blue-green; /* Blue Green for buttons */
+        border: none;
+        border-radius: $border-radius;
+        color: $white;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+          background-color: $ecru; /* Ecru on hover */
+        }
+      }
+
+      button:nth-child(3) {
+        background-color: $ecru; /* Different color for delete */
+        color: $white;
+
+        &:hover {
+          background-color: darken($ecru, 10%);
+        }
+      }
+    }
+  }
+
+  .no-projects {
+    text-align: center;
+    font-size: 1.2rem;
+    color: $primary-text-color;
+  }
+}
+
+@media (max-width: 600px) {
+  .projects-container {
+    padding: 15px;
+  }
+
+  li {
+    flex-direction: column;
+    align-items: flex-start;
+
+    button {
+      margin-top: 10px;
+      width: 100%;
+    }
+  }
+}

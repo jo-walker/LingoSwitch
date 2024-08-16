@@ -1,0 +1,170 @@
+@import '../../../styles/variables.scss'; 
+
+.project-form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid $blue-green;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  background-color: $white;
+  position: relative; /* Ensure proper stacking context for dropdown */
+  z-index: 1; /* Ensure lower z-index compared to dropdown */
+}
+
+/* General form styling */
+form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: $white;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+  color: $blue-green; /* Blue Green for labels */
+}
+
+input[type="text"],
+select,
+ng-select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid $blue-green;
+  border-radius: $border-radius;
+  font-size: 14px;
+  background-color: $white; /* White background */
+}
+
+input[type="text"]::placeholder {
+  color: $pale-azure; /* Pale Azure for placeholder text */
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  background-color: $blue-green; /* Blue Green for buttons */
+  border: none;
+  border-radius: $border-radius;
+  color: $white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: $ecru; /* Ecru on hover */
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+/* ng-select styling */
+.ng-select {
+  margin-bottom: 15px;
+  position: relative; /* Ensure dropdown positions correctly within form */
+}
+
+.ng-select .ng-dropdown-panel {
+  background-color: $white;
+  border-radius: $border-radius;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15); /* Add a subtle shadow to distinguish it */
+  z-index: 1000; /* Ensure the dropdown appears above other components */
+  position: absolute; /* Ensure the dropdown is positioned above other content */
+  width: 100%; /* Match the dropdown width to the select container */
+}
+
+.ng-select .ng-option {
+  background-color: $white;
+  color: $primary-text-color;
+  padding: 10px;
+
+  &:hover {
+    background-color: $blue-green;
+    color: $white;
+  }
+}
+
+.ng-select .ng-select-container {
+  border: 1px solid $blue-green;
+  border-radius: $border-radius;
+  font-size: 14px;
+  background-color: $white;
+}
+
+.ng-select .ng-select-container:hover {
+  border-color: $ecru; /* Ecru on hover */
+}
+
+.ng-select .ng-select-selected-item {
+  font-size: 14px;
+  color: $blue-green; /* Blue Green for selected items */
+}
+
+.ng-select .ng-select-item {
+  font-size: 14px;
+  color: $blue-green; /* Blue Green for options */
+}
+
+.ng-select .ng-select-item:hover {
+  background-color: $blue-green;
+  color: $white;
+}
+
+.ng-select .ng-select-placeholder {
+  color: $pale-azure;
+}
+
+.ng-select .ng-clear-zone,
+.ng-select .ng-arrow-zone {
+  color: $blue-green;
+}
+
+/* Add URL/String button styling */
+button[type="button"] {
+  padding: 8px 12px;
+  margin-top: 10px;
+  background-color: $blue-green;
+  border: none;
+  border-radius: $border-radius;
+  color: $white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type="button"]:hover {
+  background-color: $ecru;
+}
+
+/* Input fields inside add new URL/String form */
+.add-new-url-string input[type="text"] {
+  margin-bottom: 10px;
+}
+
+.add-new-url-string button[type="button"] {
+  background-color: $blue-green;
+  margin-left: 5px;
+}
+
+.add-new-url-string button[type="button"]:hover {
+  background-color: $ecru;
+}
+
+/* Multi-select styling */
+select[multiple] {
+  width: 100%;
+  height: auto;
+  min-height: 100px;
+  border: 1px solid $blue-green;
+  background-color: $white;
+  border-radius: $border-radius;
+}

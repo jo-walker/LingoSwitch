@@ -1,0 +1,81 @@
+@import '../../../styles/variables.scss';
+
+.register-container {
+  background-color: $white;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  max-width: 400px;
+  margin: 100px auto;
+  padding: 2rem;
+  text-align: center;
+
+  h2 {
+    font-size: 1.5rem;
+    color: $ecru;
+    margin-bottom: 1.5rem;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: left;
+
+    div {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1rem;
+
+      label {
+        font-size: 1rem;
+        color: $primary-text-color;
+        margin-bottom: 0.5rem;
+      }
+
+      input {
+        padding: 0.75rem;
+        border-radius: $border-radius;
+        border: 1px solid $blue-green;
+        font-size: 1rem;
+
+        &:focus {
+          outline: none;
+          border-color: $ecru;
+          box-shadow: 0 0 5px rgba(223, 188, 114, 0.5); /* Soft shadow for focus */
+        }
+      }
+    }
+
+    button {
+      background-color: $blue-green;
+      color: $white;
+      border: none;
+      padding: 0.75rem;
+      border-radius: $border-radius;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: $box-shadow;
+
+      &:hover {
+        background-color: $ecru;
+      }
+
+      &:disabled {
+        background-color: lighten($blue-green, 20%);
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .errorMessage {
+    color: red;
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .register-container {
+    margin: 50px auto;
+    padding: 1.5rem;
+  }
+}
