@@ -8,6 +8,7 @@
           <th>English</th>
           <th>French</th>
           <th>German</th>
+          <th>Status</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -16,6 +17,7 @@
           <td>{{ string.eng_us }}</td>
           <td>{{ string.fr }}</td>
           <td>{{ string.de }}</td>
+          <td>{{ string.active ? 'Active' : 'Inactive' }}</td>
           <td>
             <button pButton 
                     label="Edit" 
@@ -29,6 +31,11 @@
                     class="p-button-danger ml-2" 
                     (click)="deleteString(string.id)">
             </button>
+            <button pButton 
+                    label="{{ string.active ? 'Deactivate' : 'Activate' }}" 
+                    class="p-button-warning ml-2" 
+                    (click)="toggleStatus(string.id)">
+            </button>
           </td>
         </tr>
       </tbody>
@@ -38,4 +45,4 @@
   <ng-template #noStrings>
     <p>No strings found.</p>
   </ng-template>
-</div>  
+</div>

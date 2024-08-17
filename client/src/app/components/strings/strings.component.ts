@@ -38,4 +38,14 @@ export class StringsComponent implements OnInit {
       }
   });
   }
+  toggleStatus(stringId: string): void {
+    this.stringService.toggleStringStatus(stringId).subscribe({
+      next: () => {
+        this.loadStrings(); // Reload strings after toggling status
+      },
+      error: (error) => {
+        console.error('Error toggling string status', error);
+      }
+    });
+  }
 }

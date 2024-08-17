@@ -123,3 +123,42 @@ exports.getStringById = async (req, res) => {
     res.status(500).json({ error: 'Unable to fetch string' });
   }
 };
+exports.getAllStrings = async (req, res) => {
+  try {
+    const strings = await String.findAll();
+    res.status(200).json(strings);
+  } catch (error) {
+    console.error('Error fetching all strings:', error);
+    res.status(500).json({ error: 'Unable to fetch strings' });
+  }
+};
+
+exports.getActiveStrings = async (req, res) => {
+  try {
+    const strings = await String.findAll({
+      where: { status: 'active' },
+    });
+    res.status(200).json(strings);
+  } catch (error) {
+    console.error('Error fetching active strings:', error);
+    res.status(500).json({ error: 'Unable to fetch active strings' });
+  }
+};
+// a method to update the status of a string. Here's a method for toggling between active and inactive
+exports.toggleStringStatus = async (req, res) => {
+  try {
+    const string = await String.findByPk(req.params.id);
+    if (!string) {
+      return res.status(404).json({ error: 'String not found' });
+    }
+
+    // Toggle the status
+    string.active = !string.active;
+    await string.save();
+
+    res.status(200).json({ message: 'String status updated', active: string.active });
+  } catch (error) {
+    console.error('Error toggling string status:', error);
+    res.status(500).json({ error: 'Unable to toggle string status' });
+  }
+};

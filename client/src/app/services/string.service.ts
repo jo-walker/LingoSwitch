@@ -32,4 +32,10 @@ export class StringService {
   deleteString(id: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
+  toggleStringStatus(id: string): Observable<any> {
+    return this.http.put(`${this.baseUrl}/toggle-status/${id}`, {});
+  }
+  getActiveStrings(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/active`);
+  } 
 }
