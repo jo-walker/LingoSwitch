@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class LoginComponent { 
   username: string = '';
   password: string = '';
-  error: string | null = null; // to hold the error message from the server if login fails 
+  error: string | null = null; //hold the error msg from the server if login fails 
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -19,12 +19,12 @@ export class LoginComponent {
       next: (response) => {
         localStorage.setItem('token', response.token);
         localStorage.setItem('userId', response.userId);  // Store only the user ID
-        this.router.navigate(['/projects']);// Redirect to the projects page after login
-        this.error = null; // Clear the error message if login is successful
+        this.router.navigate(['/projects']);// Redirect to the projects management after login
+        this.error = null; // Clear error msg if login is ok
       },
       error: (error) => {
         console.error('Login error:', error);
-        this.error = 'Invalid username or password'; // show a user friendly error message
+        this.error = 'Invalid username or password';
       }
     });
   }

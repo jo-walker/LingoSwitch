@@ -1,6 +1,5 @@
 const { String } = require('../models'); // Import models
 
-
 exports.createString = async (req, res) => {
   try {
     const createdBy = req.body.userId || null; // Retrieve user ID from the request
@@ -93,23 +92,13 @@ exports.getStringsByProjectId = async (req, res) => {
   try {
     console.log('Project ID:', req.params.projectId); // Debug log
     const strings = await String.findAll({ where: { projectId: req.params.projectId } });
-    console.log('Retrieved Strings:', strings); // Debug log
+    console.log('Retrieved Strings:', strings); 
     res.json(strings);
   } catch (error) {
     console.error('Error fetching strings:', error);
     res.status(500).json({ error: 'Unable to fetch strings' });
   }
 };
-
-// exports.getStrings = async (req, res) => {
-//   try {
-//     const strings = await String.findAll();
-//     res.status(200).json(strings);
-//   } catch (error) {
-//     console.error('Error fetching strings:', error);
-//     res.status(500).json({ error: 'Unable to fetch strings' });
-//   }
-// };
 
 exports.getStringById = async (req, res) => {
   try {

@@ -22,10 +22,8 @@ export class ProjectsComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error fetching projects', error);
-        // Handle error case, for example, by showing a notification
       },
       complete: () => {
-        // Optionally handle the completion of the observable
         console.log('Projects loaded successfully');
       }
     });
@@ -39,10 +37,8 @@ export class ProjectsComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error deleting project', error);
-        // Handle error case, for example, by showing a notification
       },
       complete: () => {
-        // Optionally handle the completion of the observable
         console.log('Delete operation completed');
       }
     });

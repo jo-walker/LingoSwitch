@@ -11,12 +11,12 @@ const cors = require('cors');
 const helmet = require('helmet');
 const xssClean = require('xss-clean');
 
-// Initialize Express app
+// Express app init
 const app = express();
 
 // Configure CORS
 const corsOptions = {
-  origin: 'http://localhost:4200', // Angular app URL
+  origin: 'http://localhost:4200',
   optionsSuccessStatus: 200
 };
 
@@ -25,14 +25,14 @@ app.use(bodyParser.json());
 app.use(helmet());
 app.use(xssClean());
 
-// Define routes
+// routes
 app.use('/api/strings', stringRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/urls', urlRoutes);
 
-// Sync the database and start the server
+// Sync the db and start the server
 sequelize.sync({ alter: true })
   .then(() => {
     console.log('Database & tables created!');

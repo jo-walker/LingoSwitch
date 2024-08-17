@@ -4,9 +4,10 @@ const projectController = require('../controllers/projectController');
 const urlController = require('../controllers/urlController');
 const stringController = require('../controllers/stringController');
 const authMiddleware = require('../middleware/authMiddleware');
+
 // Define routes
-router.get('/', authMiddleware, projectController.getAllProjects); //getting all projects
-router.get('/:id', authMiddleware, projectController.getProjectById);
+router.get('/', authMiddleware, projectController.getAllProjects); 
+router.get('/:id', authMiddleware, projectController.getProjectById); 
 router.post('/', authMiddleware, projectController.createProjectWithStrings);
 router.put('/:id', authMiddleware, projectController.updateProject);
 router.delete('/:id', authMiddleware, projectController.deleteProject);
