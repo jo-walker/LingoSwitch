@@ -190,9 +190,9 @@ The user interface is developed using Angular 17 with PrimeNG components for a m
 ## Screenshots
 
 ### Web UI
-![Projects](../LingoSwitch/client/src/styles/ProjectManagement.png)
-![URL](../LingoSwitch/client/src/styles/URLManagement.png)
-![Strings](../LingoSwitch/client/src/styles/StringsManagement.png)
+![Projects](./client/src/styles/ProjectManagement.png)
+![URL](./client/src/styles/URLManagement.png)
+![Strings](./client/src/styles/StringsManagement.png)
 #### for more demo screenshots please refer to this directory: ../LingoSwitch/client/src/styles/
 
 ## Functionality
