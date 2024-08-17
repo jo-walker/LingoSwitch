@@ -101,15 +101,15 @@ exports.getStringsByProjectId = async (req, res) => {
   }
 };
 
-exports.getStrings = async (req, res) => {
-  try {
-    const strings = await String.findAll();
-    res.status(200).json(strings);
-  } catch (error) {
-    console.error('Error fetching strings:', error);
-    res.status(500).json({ error: 'Unable to fetch strings' });
-  }
-};
+// exports.getStrings = async (req, res) => {
+//   try {
+//     const strings = await String.findAll();
+//     res.status(200).json(strings);
+//   } catch (error) {
+//     console.error('Error fetching strings:', error);
+//     res.status(500).json({ error: 'Unable to fetch strings' });
+//   }
+// };
 
 exports.getStringById = async (req, res) => {
   try {
@@ -160,5 +160,24 @@ exports.toggleStringStatus = async (req, res) => {
   } catch (error) {
     console.error('Error toggling string status:', error);
     res.status(500).json({ error: 'Unable to toggle string status' });
+  }
+};
+exports.getStrings = async (req, res) => {
+  try {
+    const statusFilter = req.query.status;
+    let condition = {};
+
+    if (statusFilter && statusFilter !== 'all') {
+      condition.active = statusFilter === 'active' ? true : false;
+    }
+
+    const strings = await String.findAll({
+      where: condition,
+    });
+
+    res.status(200).json(strings);
+  } catch (error) {
+    console.error('Error fetching strings:', error);
+    res.status(500).json({ error: 'Unable to fetch strings' });
   }
 };

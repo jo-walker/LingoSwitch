@@ -11,6 +11,13 @@
   display: grid;
   gap: 20px;
 }
+.string-item-actions {
+  display: flex;
+  gap: 10px; /* Space between buttons */
+  flex-wrap: nowrap; /* Ensure buttons stay on one row */
+  justify-content: flex-start; /* Align the buttons to the left */
+  align-items: center; /* Ensure vertical alignment */
+}
 
 /* Styling for the PrimeNG custom table */
 .custom-table {
@@ -34,14 +41,6 @@
   tr:hover {
     background-color: rgba(89, 180, 207, 0.1);
   }
-}
-
-/* Flexbox for the actions column */
-.string-item-actions {
-  display: flex;
-  gap: 10px; /* Space between buttons */
-  flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
-  justify-content: flex-start;
 }
 
 /* Styling for buttons */
@@ -88,5 +87,55 @@
   button {
     width: 100%;
     margin-right: 0;
+  }
+}
+/* Styling for the filter container */
+.filter-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Align label and dropdown on the left */
+  gap: 15px; /* Space between label and dropdown */
+  margin-bottom: 20px; /* Space between filter and the table */
+}
+
+/* Styling for the filter label */
+.filter-label {
+  font-size: 16px;
+  font-weight: bold;
+  color: $primary-text-color;
+}
+
+/* Styling for the status filter dropdown */
+#status-filter {
+  padding: 10px;
+  font-size: 16px;
+  color: $primary-text-color;
+  background-color: $white;
+  border: 1px solid $blue-green;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  outline: none;
+
+  &:hover {
+    border-color: lighten($blue-green, 10%);
+  }
+
+  &:focus {
+    border-color: $blue-green;
+    box-shadow: 0 0 8px rgba(89, 180, 207, 0.3);
+  }
+}
+
+/* Make sure the dropdown adjusts well on smaller screens */
+@media (max-width: 600px) {
+  #status-filter {
+    width: 100%;
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .filter-container {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
