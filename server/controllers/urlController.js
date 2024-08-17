@@ -1,13 +1,13 @@
-const sequelize = require('../config/database'); // this ensures that the sequelize instance is passed to the model
+const sequelize = require('../config/database'); // sequelize instance is passed to the model
 const URL = require('../models/URL')(sequelize); // Ensure sequelize instance is passed
 const Project = require('../models/Project')(sequelize); // Add this line to import Project model
 
 exports.createUrl = async (req, res) => {
   try {
-    // Ensure the project exists (if required)
+    // Ensure the project exists
     const project = req.body.projectId ? await Project.findByPk(req.body.projectId) : null;
 
-    // Fetch the latest URL record by ID for ID generation (same logic as before)
+    // Fetch the latest URL record by id
     const latestUrl = await URL.findOne({
       order: [['id', 'DESC']]
     });
@@ -32,7 +32,7 @@ exports.createUrl = async (req, res) => {
       id: newId,
       url: req.body.url,
       projectId: req.body.projectId || null, // Nullable for general URLs
-      history: [history], // Store initial creation history
+      history: [history], // Storoing creation history
     });
 
     res.status(201).json(newUrl);

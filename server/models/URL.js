@@ -8,7 +8,7 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING(4),
       primaryKey: true,
       allowNull: false,       
-      defaultValue: () => uuidv4().slice(0, 4) // Generate 4-character ID
+      defaultValue: () => uuidv4().slice(0, 4) // Generate 4-character ID from UUID 
     },
     url: {
       type: DataTypes.STRING(255),

@@ -9,7 +9,7 @@ import { StringService } from '../../services/string.service';
 export class StringsComponent implements OnInit {
   @Input() projectId!: string;
   strings: any[] = [];
-  filterStatus: string = 'all'; // Default to show all strings
+  filterStatus: string = 'all'; // Default all strings
 
   constructor(private stringService: StringService) {}
 

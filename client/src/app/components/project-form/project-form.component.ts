@@ -68,7 +68,7 @@ export class ProjectFormComponent implements OnInit {
       error: (error) => {
         console.error('Error loading project:', error);
         this.isLoading = false; // stop loading state on error
-        setTimeout(() => this.errorMessage = null, 3000);  // Auto-hide error message
+        setTimeout(() => this.errorMessage = null, 3000);  // hide error message
       }
     });
   }
@@ -153,7 +153,7 @@ export class ProjectFormComponent implements OnInit {
         },
         error: (error) => {
           this.errorMessage = 'Error adding string.';
-          setTimeout(() => this.errorMessage = null, 3000);  // Auto-hide error message
+          setTimeout(() => this.errorMessage = null, 3000);  // Automatically hide error msg
         }
       });
     }
@@ -170,7 +170,7 @@ export class ProjectFormComponent implements OnInit {
       languages: this.projectForm.get('languages')?.value.split(',').map((lang: string) => lang.trim()),
       urls: this.projectForm.get('selectedUrls')?.value,
       strings: this.projectForm.get('selectedStrings')?.value,
-      updatedBy: userId,  // Always set updatedBy
+      updatedBy: userId, 
     };
   
     // Only set createdBy when creating a new project

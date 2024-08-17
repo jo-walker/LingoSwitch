@@ -103,7 +103,7 @@ export class StringFormComponent implements OnInit {
     });
   }
 
-  // Set success message and auto-clear after 3 seconds
+  // Set success msg and clear after 3 seconds
   setSuccessMessage(message: string): void {
     this.clearMessages(); // Clear any existing messages
     this.successMessage = message;
@@ -112,16 +112,16 @@ export class StringFormComponent implements OnInit {
     }, 3000); // Clear message after 3 seconds
   }
 
-  // Set error message and auto-clear after 3 seconds
+  // Set error msg and clear after 3 seconds
   setErrorMessage(message: string): void {
-    this.clearMessages(); // Clear any existing messages
+    this.clearMessages(); // Clear existing msgs to show new one without overlap
     this.errorMessage = message;
     this.messageTimeout = setTimeout(() => {
       this.errorMessage = null;
-    }, 3000); // Clear message after 3 seconds
+    }, 3000); 
   }
 
-  // Clear any existing success or error messages
+  // Clear any existing success or error msgs
   clearMessages(): void {
     if (this.messageTimeout) {
       clearTimeout(this.messageTimeout); // Clear existing timeout if any

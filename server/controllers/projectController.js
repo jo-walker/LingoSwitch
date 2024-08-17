@@ -3,7 +3,7 @@ const { Project, String, URL } = require('../models');
 exports.getAllProjects = async (req, res) => {
   try {
     const projects = await Project.findAll({
-      include: ['urls', 'strings'] // Include associated URLs and Strings if needed
+      include: ['urls', 'strings'] // Include associated URLs and Strings
     });
     res.status(200).json(projects);
   } catch (error) {
@@ -17,15 +17,12 @@ exports.createProjectWithStrings = async (req, res) => {
   try {
     const createdBy = req.user?.username || 'unknown';  // Get the username from the request
     const history = JSON.stringify({
-      createdBy: req.user.id, // Store only user ID
+      createdBy: req.user.id, // Store only userId
       createdAt: new Date().toISOString()
     });
-    
 
     // Create the project with the history
     const project = await Project.create({ name, languages, history });
-
-    // Handle URLs and Strings (as in your existing code)
 
     res.status(201).json(project);
   } catch (error) {
@@ -56,7 +53,7 @@ exports.updateProject = async (req, res) => {
     if (!project) {
       return res.status(404).json({ error: 'Project not found' });
     }
-    const updatedBy = req.user?.username || 'unknown';  // Capture the username from the request
+    const updatedBy = req.user?.username || 'unknown';  // get username from the request
 
     const history = JSON.parse(project.history || '{}');
     history.updatedBy = req.user.id; // Store only user ID
@@ -68,8 +65,6 @@ exports.updateProject = async (req, res) => {
       languages,
       history: JSON.stringify(history)
     });
-
-    // Handle URLs and Strings (as in your existing code)
 
     res.status(200).json(project);
   } catch (error) {

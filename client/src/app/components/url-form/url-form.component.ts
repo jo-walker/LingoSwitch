@@ -81,7 +81,7 @@ export class UrlFormComponent implements OnInit {
           this.successMessage = 'URL created successfully.';
           this.isLoading = false;
           this.urlChange.emit();
-          setTimeout(() => this.router.navigate(['/urls']), 2000); // Navigate to URLs list
+          setTimeout(() => this.router.navigate(['/urls']), 2000); 
         },
         error: (error) => {
           this.errorMessage = 'Error creating URL.';

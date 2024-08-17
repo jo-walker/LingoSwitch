@@ -4,7 +4,7 @@ module.exports = (sequelize) => {
   const ProjectUser = sequelize.define('ProjectUser', {
     projectId: {
       type: DataTypes.STRING(5),
-      primaryKey: true,  // Part of the composite primary key
+      primaryKey: true,  // Part of the composite PK
       references: {
         model: 'projects',
         key: 'id',
@@ -14,7 +14,7 @@ module.exports = (sequelize) => {
     },
     userId: {
       type: DataTypes.INTEGER,
-      primaryKey: true,  // Part of the composite primary key
+      primaryKey: true,  // Part of the composite PK
       references: {
         model: 'users',
         key: 'id',
