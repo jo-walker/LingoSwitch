@@ -1,6 +1,11 @@
 <div class="string-list-container">
   <button pButton label="Add String" class="p-button-info" routerLink="/strings/new"></button>
-
+  <select id="status-filter" (change)="onFilterChange($event)">
+    <option value="all">All</option>
+    <option value="active">Active</option>
+    <option value="inactive">Inactive</option>
+  </select>
+  
   <div *ngIf="strings && strings.length > 0; else noStrings">
     <table class="custom-table">
       <thead>
@@ -19,24 +24,27 @@
           <td>{{ string.de }}</td>
           <td>{{ string.active ? 'Active' : 'Inactive' }}</td>
           <td>
-            <button pButton 
-                    label="Edit" 
-                    icon="pi pi-pencil" 
-                    class="p-button-info" 
-                    [routerLink]="['/strings/edit', string.id]">
-            </button>
-            <button pButton 
-                    label="Delete" 
-                    icon="pi pi-trash" 
-                    class="p-button-danger ml-2" 
-                    (click)="deleteString(string.id)">
-            </button>
-            <button pButton 
-                    label="{{ string.active ? 'Deactivate' : 'Activate' }}" 
-                    class="p-button-warning ml-2" 
-                    (click)="toggleStatus(string.id)">
-            </button>
+            <div class="string-item-actions">
+              <button pButton 
+                      label="Edit" 
+                      icon="pi pi-pencil" 
+                      class="p-button-info" 
+                      [routerLink]="['/strings/edit', string.id]">
+              </button>
+              <button pButton 
+                      label="Delete" 
+                      icon="pi pi-trash" 
+                      class="p-button-danger ml-2" 
+                      (click)="deleteString(string.id)">
+              </button>
+              <button pButton 
+                      label="{{ string.active ? 'Deactivate' : 'Activate' }}" 
+                      class="p-button-warning ml-2" 
+                      (click)="toggleStatus(string.id)">
+              </button>
+            </div>
           </td>
+          
         </tr>
       </tbody>
     </table>

@@ -17,10 +17,14 @@ export class StringService {
     return this.http.get(`${this.baseUrl}/${id}`);
   }
 
-  getAllStrings(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}`);
+  getAllStrings(status?: string): Observable<any[]> {
+    let url = `${this.baseUrl}`;
+    if (status && status !== 'all') {
+      url += `?status=${status}`;
+    }
+    return this.http.get<any[]>(url);
   }
-
+  
   createString(string: any): Observable<any> {
     return this.http.post(this.baseUrl, string);
   }

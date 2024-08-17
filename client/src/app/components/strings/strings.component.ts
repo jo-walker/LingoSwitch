@@ -9,24 +9,23 @@ import { StringService } from '../../services/string.service';
 export class StringsComponent implements OnInit {
   @Input() projectId!: string;
   strings: any[] = [];
+  filterStatus: string = 'all'; // Default to show all strings
 
   constructor(private stringService: StringService) {}
 
   ngOnInit(): void {
     this.loadStrings();
   }
-
   loadStrings(): void {
-    this.stringService.getAllStrings().subscribe({
+    this.stringService.getAllStrings(this.filterStatus).subscribe({
       next: (data) => {
         this.strings = data;
       },
       error: (error) => {
         console.error('Error fetching strings', error);
       }
-  });
-  }
-
+    });
+  }  
   deleteString(id: string): void {
     this.stringService.deleteString(id).subscribe({
       next: (response) => {
@@ -48,4 +47,9 @@ export class StringsComponent implements OnInit {
       }
     });
   }
+  onFilterChange(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    this.filterStatus = selectElement.value;
+    this.loadStrings(); // Reload strings based on the selected filter
+  }  
 }
