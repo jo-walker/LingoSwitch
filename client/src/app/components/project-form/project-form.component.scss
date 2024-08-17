@@ -143,11 +143,11 @@ button[type="button"]:hover {
   margin-bottom: 20px;
 }
 
-.ng-dropdown-panel {
+.ng-dropdown-panel > div {
   background-color: #fff !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: $border-radius;
-  z-index: 9999;
+  z-index: 9999; // Ensure dropdown is on top of other elements
 }
 
 .ng-option {
@@ -166,10 +166,22 @@ button[type="button"]:hover {
 .ng-select .ng-select-placeholder {
   color: #aaa;
 }
-
-.ng-select .ng-select-item {
+.ng-select.string-select, .ng-select.url-select{
+  border:0px;
+  min-height: 0px;
+  border-radius: 5px;
+  background-color: $ecru;
+}
+.ng-select.string-select .ng-select-container, .ng-select.url-select .ng-select-container{            
+  min-height: 0px;
+  border-radius: 0;
+  background-color: $ecru;
+}
+.ng-select.ng-dropdown-panel ng-select-multiple ng-select-bottom {
   font-size: 16px;
   padding: 8px;
+  background-color: $ecru;
+
 }
 
 .ng-clear-zone,
