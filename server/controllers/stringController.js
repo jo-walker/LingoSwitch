@@ -1,4 +1,5 @@
 const { String } = require('../models'); // Import models
+const { translateText } = require('../utils/translateService');
 
 exports.createString = async (req, res) => {
   try {
@@ -168,5 +169,49 @@ exports.getStrings = async (req, res) => {
   } catch (error) {
     console.error('Error fetching strings:', error);
     res.status(500).json({ error: 'Unable to fetch strings' });
+  }
+};
+
+exports.createString = async (req, res) => {
+  try {
+    const { eng_us } = req.body;
+
+    // Translate English string to French and German
+    const frTranslation = await translateText(eng_us, 'fr');
+    const deTranslation = await translateText(eng_us, 'de');
+
+    // Create a new string in the database
+    const newString = await String.create({
+      eng_us,
+      fr: frTranslation,
+      de: deTranslation,
+      userId: req.user.id,
+      projectId: req.body.projectId,
+    });
+
+    res.status(201).json(newString);
+  } catch (error) {
+    console.error('Error creating string:', error);
+    res.status(500).json({ error: 'Unable to create string' });
+  }
+};
+// a method to translate a string into French and German using the Google Translate API
+exports.translateString = async (req, res) => {
+  try {
+    const { text } = req.body;
+    
+    if (!text) {
+      return res.status(400).json({ error: 'Text to translate is missing.' });
+    }
+
+    // Translate the text into French and German
+    const frTranslation = await translateText(text, 'fr');
+    const deTranslation = await translateText(text, 'de');
+
+    // Return the translations to the frontend
+    res.status(200).json({ fr: frTranslation, de: deTranslation });
+  } catch (error) {
+    console.error('Translation error:', error);
+    res.status(500).json({ error: 'Unable to translate string' });
   }
 };

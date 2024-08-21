@@ -129,4 +129,23 @@ export class StringFormComponent implements OnInit {
     this.successMessage = null;
     this.errorMessage = null;
   }
-}
+  translateString(): void {
+    const eng_us = this.stringForm.get('eng_us')?.value;
+    if (!eng_us) {
+      this.setErrorMessage('Please enter a string to translate.');
+      return;
+    }
+  
+    this.stringService.translate(eng_us).subscribe({
+      next: (response) => {
+        this.stringForm.patchValue({
+          fr: response.fr,
+          de: response.de
+        });
+      },
+      error: (error) => {
+        this.setErrorMessage('Failed to translate the string.');
+      }
+    });
+  }
+}  

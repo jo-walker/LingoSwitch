@@ -42,4 +42,7 @@ export class StringService {
   getActiveStrings(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/active`);
   } 
+  translate(text: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/translate`, { text });
+  }
 }

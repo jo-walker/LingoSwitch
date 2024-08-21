@@ -9,5 +9,6 @@ router.get('/:id', stringController.getStringById);
 router.put('/:id', stringController.updateString);
 router.delete('/:id', stringController.deleteString);
 router.put('/toggle-status/:id', stringController.toggleStringStatus);
+router.post('/translate', stringController.translateString); // for google api translation 
 
 module.exports = router;

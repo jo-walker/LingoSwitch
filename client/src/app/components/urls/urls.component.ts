@@ -29,8 +29,6 @@ export class UrlsComponent implements OnInit {
       }
   });
   }
-
-  // Method to delete a URL
   deleteUrl(id: string): void {
     this.urlService.deleteUrl(id).subscribe({
       next: (response) => {
@@ -43,8 +41,8 @@ export class UrlsComponent implements OnInit {
   });
   }
 
-  // This method will be called when a URL is created or updated
+  //called when a URL is created or updated
   onUrlChange(): void {
-    this.loadUrls(); // Reload URLs after a change
+    this.loadUrls(); 
   }
 }
