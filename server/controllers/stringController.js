@@ -1,29 +1,52 @@
 const { String } = require('../models'); // Import models
 const { translateText } = require('../utils/translateService');
-
 exports.createString = async (req, res) => {
   try {
-    const createdBy = req.body.userId || null; // Retrieve user ID from the request
+    const { eng_us, fr, de, context, projectId } = req.body;
+
+    // Validate context
+    if (!context) {
+      return res.status(400).json({ error: 'Context is required (e.g., masculine, feminine, plural).' });
+    }
+    if (!eng_us) {
+      return res.status(400).json({ error: 'English text is required.' });
+    }
+
+    // Ensure userId is attached from the authenticated request
+    const userId = req.user ? req.user.id : null;
+
+    // Translate English string to French and German (if not provided)
+    const frTranslation = fr || await translateText(eng_us, 'fr');
+    const deTranslation = de || await translateText(eng_us, 'de');
 
     // Build history for the string creation
     const history = [{
       action: 'created',
+      userId: userId,
+      projectId: projectId,
       createdAt: new Date().toISOString(),
-      createdBy: createdBy,
     }];
 
-    // Create the new string with the history field
+    // Create a new string in the database with history and optional projectId
     const newString = await String.create({
-      ...req.body,
-      history
+      eng_us,
+      fr: frTranslation,
+      de: deTranslation,
+      context, // Pass context as part of the record
+      userId: userId,
+      projectId: projectId,
+      history,
     });
 
+    // Send success response with the new string
     res.status(201).json(newString);
+
   } catch (error) {
     console.error('Error creating string:', error);
     res.status(500).json({ error: 'Unable to create string' });
   }
 };
+
 exports.updateString = async (req, res) => {
   try {
     const string = await String.findByPk(req.params.id);
@@ -31,13 +54,14 @@ exports.updateString = async (req, res) => {
       return res.status(404).json({ error: 'String not found' });
     }
 
-    const updatedBy = req.body.userId || null; // Retrieve user ID from the request
+    const updatedBy = req.user ? req.user.id : null;
 
-    // Capture the old values
+    // Capture the old values, including context
     const oldString = {
       eng_us: string.eng_us,
       fr: string.fr,
-      de: string.de
+      de: string.de,
+      context: string.context,
     };
 
     // Build history entry for the update
@@ -45,13 +69,13 @@ exports.updateString = async (req, res) => {
       action: 'updated',
       updatedAt: new Date().toISOString(),
       updatedBy: updatedBy,
-      oldString: oldString // Record the old values before updating
+      oldString: oldString,
     };
 
     // Update the string and add the new history entry
     const updatedString = await string.update({
       ...req.body,
-      history: [...(string.history || []), updateHistory] // Append the update history to existing history
+      history: [...(string.history || []), updateHistory],
     });
 
     res.status(200).json(updatedString);
@@ -59,7 +83,10 @@ exports.updateString = async (req, res) => {
     console.error('Error updating string:', error);
     res.status(500).json({ error: error.message });
   }
-};exports.deleteString = async (req, res) => {
+};
+
+
+exports.deleteString = async (req, res) => {
   try {
     const string = await String.findByPk(req.params.id);
     if (!string) {
@@ -169,30 +196,6 @@ exports.getStrings = async (req, res) => {
   } catch (error) {
     console.error('Error fetching strings:', error);
     res.status(500).json({ error: 'Unable to fetch strings' });
-  }
-};
-
-exports.createString = async (req, res) => {
-  try {
-    const { eng_us } = req.body;
-
-    // Translate English string to French and German
-    const frTranslation = await translateText(eng_us, 'fr');
-    const deTranslation = await translateText(eng_us, 'de');
-
-    // Create a new string in the database
-    const newString = await String.create({
-      eng_us,
-      fr: frTranslation,
-      de: deTranslation,
-      userId: req.user.id,
-      projectId: req.body.projectId,
-    });
-
-    res.status(201).json(newString);
-  } catch (error) {
-    console.error('Error creating string:', error);
-    res.status(500).json({ error: 'Unable to create string' });
   }
 };
 // a method to translate a string into French and German using the Google Translate API

@@ -10,7 +10,9 @@ module.exports = (req, res, next) => {
 
     // Log the decoded token to see what it contains
     console.log('Decoded token:', req.user);
-    
+    console.log('User ID:', req.user.id);
+    console.log('Project ID:', req.body.projectId);
+  
     next();
   } catch (err) {
     res.status(400).json({ message: 'Invalid token' });

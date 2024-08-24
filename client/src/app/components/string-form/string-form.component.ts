@@ -28,7 +28,8 @@ export class StringFormComponent implements OnInit {
     this.stringForm = this.fb.group({
       eng_us: ['', Validators.required],
       fr: [''],
-      de: ['']
+      de: [''],
+      context: ['', Validators.required]
     });
   }
 
@@ -67,7 +68,8 @@ export class StringFormComponent implements OnInit {
       eng_us: this.stringForm.get('eng_us')?.value,
       fr: this.stringForm.get('fr')?.value,
       de: this.stringForm.get('de')?.value,
-      projectId: this.projectId,
+      context: this.stringForm.get('context')?.value, 
+      projectId: this.projectId || null, // null if no projectId
       userId: this.authService.getCurrentUserId(), // Add userId for history tracking
     };
   
@@ -92,6 +94,7 @@ export class StringFormComponent implements OnInit {
   }
 
   createString(stringData: any): void {
+    console.log(this.stringForm.value); // Debugging for form values before sending to server 
     this.stringService.createString(stringData).subscribe({
       next: (response) => {
         this.setSuccessMessage('String created successfully.');

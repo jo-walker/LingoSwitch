@@ -38,6 +38,7 @@ export class ProjectFormComponent implements OnInit {
       newStringEn: [''],
       newStringFr: [''],
       newStringDe: [''],
+      newStringContext: ['', Validators.required],
     });
   }
 
@@ -104,7 +105,8 @@ export class ProjectFormComponent implements OnInit {
     if (newUrlValue && newUrlValue.trim()) {
       const newUrlPayload = {
         url: newUrlValue,
-        projectId: this.projectId
+        projectId: this.projectId,
+        userId: this.authService.getCurrentUserId()
       };
 
       this.projectService.createUrl(newUrlPayload).subscribe({
@@ -134,12 +136,16 @@ export class ProjectFormComponent implements OnInit {
     const newStringEn = this.projectForm.get('newStringEn')?.value;
     const newStringFr = this.projectForm.get('newStringFr')?.value;
     const newStringDe = this.projectForm.get('newStringDe')?.value;
+    const newStringContext = this.projectForm.get('newStringContext')?.value;  // Get the context
 
-    if (newStringEn.trim() || newStringFr.trim() || newStringDe.trim()) {
+    if (newStringEn.trim()) {
       const newString = {
         eng_us: newStringEn,
         fr: newStringFr,
-        de: newStringDe
+        de: newStringDe,
+        context: newStringContext,  // Include context
+        projectId: this.projectId,
+        userId: this.authService.getCurrentUserId()
       };
 
       this.projectService.createString(newString).subscribe({
@@ -147,8 +153,9 @@ export class ProjectFormComponent implements OnInit {
           this.availableStrings.push(string);
           this.projectForm.controls['selectedStrings'].setValue([...this.projectForm.controls['selectedStrings'].value, string.id]);
           this.projectForm.get('newStringEn')?.reset();
-          this.projectForm.get('newStringFr')?.reset();
-          this.projectForm.get('newStringDe')?.reset();
+          this.projectForm.get('newStringFr')?.reset(); // Optional: Reset fields if you allow manual input
+          this.projectForm.get('newStringDe')?.reset(); // Optional: Reset fields if you allow manual input
+          this.projectForm.get('newStringContext')?.reset();  // Reset context field
           this.showAddStringForm = false;
         },
         error: (error) => {
@@ -159,6 +166,7 @@ export class ProjectFormComponent implements OnInit {
     }
   }
   onSubmit(): void {
+    console.log(this.projectForm); // Debugging: Print the form state to the console
     if (this.projectForm.invalid) return;
   
     this.isLoading = true;

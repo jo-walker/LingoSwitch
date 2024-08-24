@@ -25,6 +25,10 @@
       <label for="de">German:</label>
       <input type="text" id="de" formControlName="de" placeholder="German Translation" class="formControl">
     </div>
+    <div>
+      <label for="context">Context:</label>
+      <input type="text" id="context" formControlName="context" placeholder="Context (e.g., masculine, feminine, plural)" />
+    </div>    
     <button type="submit">{{ isEditMode ? 'Update' : 'Create' }}</button>
   </form>
 </div>

@@ -20,13 +20,13 @@
       </div>
     </div>
 
-    <!-- <div>
+    <div>
       <label for="languages">Languages (comma separated):</label>
       <input type="text" id="languages" formControlName="languages" required>
       <div *ngIf="projectForm.get('languages')?.invalid && projectForm.get('languages')?.touched" class="validation-error">
         Languages are required.
       </div>
-    </div> -->
+    </div>
 
     <!-- URL Selection -->
     <div class="form-group">
@@ -40,11 +40,11 @@
         placeholder="Select URLs"
       ></ng-select>
   
-      <button type="button" class="add-url-button" (click)="toggleAddUrlForm()">Add New URL</button>
+      <button type="button" class="add-url-button" (click)="toggleAddUrlForm()">Create New URL</button>
   
       <div *ngIf="showAddUrlForm">
         <input type="text" formControlName="newUrl" placeholder="Enter new URL">
-        <button type="button" (click)="addNewUrl()">Add</button>
+        <button type="button" (click)="addNewUrl()">Create</button>
       </div>
     </div>
 
@@ -64,13 +64,14 @@
         </ng-template>
       </ng-select>
   
-      <button type="button" class="add-string-button" (click)="toggleAddStringForm()">Add New String</button>
+      <button type="button" class="add-string-button" (click)="toggleAddStringForm()">Create New String</button>
   
       <div *ngIf="showAddStringForm">
         <input type="text" formControlName="newStringEn" placeholder="Enter new English string">
         <input type="text" formControlName="newStringFr" placeholder="Enter new French string">
         <input type="text" formControlName="newStringDe" placeholder="Enter new German string">
-        <button type="button" (click)="addNewString()">Add</button>
+        <input type="text" formControlName="newStringContext" placeholder="Enter string context (e.g., masculine, feminine, plural)" required>
+        <button type="button" (click)="addNewString()">Create</button>
       </div>
     </div>
 

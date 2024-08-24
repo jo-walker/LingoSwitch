@@ -16,16 +16,20 @@ module.exports = (sequelize) => {
       },
     },
     eng_us: {
-      type: DataTypes.TEXT,
-      allowNull: true,
+      type: DataTypes.STRING(255),  // Changed from TEXT to VARCHAR(255)
+      allowNull: false,  // English is required
     },
     fr: {
-      type: DataTypes.TEXT,
-      allowNull: true,
+      type: DataTypes.STRING(255),  // Changed from TEXT to VARCHAR(255)
+      allowNull: true,  // Optional
     },
     de: {
-      type: DataTypes.TEXT,
-      allowNull: true,
+      type: DataTypes.STRING(255),  // Changed from TEXT to VARCHAR(255)
+      allowNull: true,  // Optional
+    },
+    context: {
+      type: DataTypes.STRING(255),  // VARCHAR(255) for context (like masculine, feminine, etc.)
+      allowNull: false,  // Context is required
     },
     userId: {
       type: DataTypes.INTEGER,
@@ -49,10 +53,16 @@ module.exports = (sequelize) => {
     },
     active: {
       type: DataTypes.BOOLEAN,
-      defaultValue: true, //  default value as active
+      defaultValue: true,  // Default value is active
     },
   }, {
     timestamps: false,
+    indexes: [
+      {
+        unique: true,
+        fields: ['eng_us', 'fr', 'de', 'context'],  // Composite unique key based on language and context
+      },
+    ],
   });
 
   String.associate = (models) => {
