@@ -93,10 +93,19 @@
 .filter-container {
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* Align label and dropdown on the left */
-  gap: 15px; /* Space between label and dropdown */
-  margin-bottom: 20px; /* Space between filter and the table */
+  justify-content: flex-start;
+  gap: 15px; /* Space between each dropdown */
+  flex-wrap: wrap; /* Wraps elements if the screen size is too small */
+  margin-bottom: 30px;
 }
+
+@media (max-width: 600px) {
+  .filter-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
 
 /* Styling for the filter label */
 .filter-label {
@@ -138,4 +147,12 @@
     flex-direction: column;
     align-items: stretch;
   }
+}
+/* String Card Example (Optional) */
+.string-card {
+  background: #fff;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin-bottom: 20px;
 }

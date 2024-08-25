@@ -1,5 +1,11 @@
+const { Op } = require('sequelize');
 const { String } = require('../models'); // Import models
 const { translateText } = require('../utils/translateService');
+const languageMapping = {
+  en: 'eng_us',
+  fr: 'fr',
+  de: 'de'
+};
 exports.createString = async (req, res) => {
   try {
     const { eng_us, fr, de, context, projectId } = req.body;
@@ -164,7 +170,7 @@ exports.getActiveStrings = async (req, res) => {
 // a method to update the status of a string. Here's a method for toggling between active and inactive
 exports.toggleStringStatus = async (req, res) => {
   try {
-    const string = await String.findByPk(req.params.id);
+    const string = await String.findByPk(req.params.id); 
     if (!string) {
       return res.status(404).json({ error: 'String not found' });
     }
@@ -218,3 +224,210 @@ exports.translateString = async (req, res) => {
     res.status(500).json({ error: 'Unable to translate string' });
   }
 };
+exports.getStringByUrlAndLang = async (req, res) => {
+  try {
+    const { urlId, stringId, lang } = req.query;
+
+    if (!urlId || !stringId || !lang) {
+      return res.status(400).json({ error: 'URL ID, String ID, and language are required.' });
+    }
+
+    const string = await String.findOne({
+      where: { urlId: urlId, id: stringId },
+    });
+
+    if (!string) {
+      return res.status(404).json({ error: 'String not found.' });
+    }
+
+    // Select the correct language value
+    let translation;
+    if (lang === 'fr') {
+      translation = string.fr;
+    } else if (lang === 'de') {
+      translation = string.de;
+    } else {
+      translation = string.eng_us;
+    }
+
+    res.status(200).json({ key: stringId, value: translation });
+  } catch (error) {
+    console.error('Error fetching string:', error);
+    res.status(500).json({ error: 'Unable to fetch string' });
+  }
+};
+exports.getStringsByLanguage = async (req, res) => {
+  try {
+    const { language } = req.params;
+    const column = languageMapping[language];  // Map the language code to the DB column
+
+    if (!column) {
+      return res.status(400).json({ error: 'Invalid language code.' });
+    }
+
+    const strings = await String.findAll({
+      where: { [column]: { [Op.ne]: null } }  // Select where the language column is not null
+    });
+
+    res.status(200).json(strings);
+  } catch (error) {
+    console.error('Error fetching strings by language:', error);
+    res.status(500).json({ error: 'Unable to fetch strings by language' });
+  }
+};
+exports.getStringsByContext = async (req, res) => {
+  try {
+    const { context } = req.params;
+
+    const strings = await String.findAll({
+      where: { context }
+    });
+
+    res.status(200).json(strings);
+  } catch (error) {
+    console.error('Error fetching strings by context:', error);
+    res.status(500).json({ error: 'Unable to fetch strings by context' });
+  }
+};
+// exports.getFilteredStrings = async (req, res) => {
+//   try {
+//     const { status } = req.query;
+//     let condition = {};
+
+//     // Add a log to check the status filter value
+//     console.log('Received status filter:', status);
+
+//     if (status && status !== 'all') {
+//       condition.active = status === 'active';  // Log the condition applied
+//       console.log('Condition applied:', condition);
+//     }
+
+//     const strings = await String.findAll({
+//       where: condition,
+//     });
+
+//     res.status(200).json(strings);
+//   } catch (error) {
+//     console.error('Error fetching strings:', error);
+//     res.status(500).json({ error: 'Unable to fetch strings' });
+//   }
+// };
+// exports.getFilteredStrings = async (req, res) => {
+//   try {
+//     let condition = { active: true };  // Hardcoded to only return active strings
+
+//     const strings = await String.findAll({
+//       where: condition,
+//     });
+
+//     res.status(200).json(strings);
+//   } catch (error) {
+//     console.error('Error fetching strings:', error);
+//     res.status(500).json({ error: 'Unable to fetch strings' });
+//   }
+// // };
+// exports.getFilteredStrings = async (req, res) => {
+//   try {
+//     const { status, language, context } = req.query;
+//     let condition = {};
+
+//     // Log the received query parameters
+//     console.log('Received Query Params - Status:', status, 'Language:', language, 'Context:', context);
+
+//     // Apply status filter
+//     if (status && status !== 'all') {
+//       condition.active = status === 'active';
+//     }
+
+//     // Apply language filter if provided and valid
+//     if (language && language.trim() !== '') {
+//       const column = languageMapping[language.trim()];
+//       if (!column) {
+//         return res.status(400).json({ error: 'Invalid language code.' });
+//       }
+//       condition[column] = { [Op.ne]: null };
+//     }
+
+//     // Apply context filter if provided
+//     if (context && context.trim() !== '') {
+//       condition.context = context.trim();
+//     }
+
+//     // Log the condition being applied to the query
+//     console.log('Condition applied to the query:', condition);
+
+//     // Query the database with the condition
+//     const strings = await String.findAll({ where: condition });
+
+//     // Check if any strings are found
+//     if (strings.length === 0) {
+//       console.log('No strings found for the applied filter');
+//       return res.status(404).json({ error: 'String not found' });
+//     }
+
+//     res.status(200).json(strings);
+//   } catch (error) {
+//     console.error('Error fetching filtered strings:', error);
+//     res.status(500).json({ error: 'Unable to fetch strings' });
+//   }
+// };
+exports.getFilteredStrings = async (req, res) => {
+  try {
+    const { status } = req.query;
+    let condition = {};
+
+    if (status && status !== 'all') {
+      condition.active = status === 'active';
+    }
+
+    const strings = await String.findAll({ where: condition });
+
+    if (strings.length === 0) {
+      return res.status(404).json({ error: 'String not found' });
+    }
+
+    res.status(200).json(strings);
+  } catch (error) {
+    console.error('Error fetching strings:', error);
+    res.status(500).json({ error: 'Unable to fetch strings' });
+  }
+};
+
+// exports.getFilteredStrings = async (req, res) => {
+//   try {
+//     const { language, context, status } = req.query;
+//     let condition = {};
+
+//     // Apply status filter if provided
+//     if (status && status !== 'all') {
+//       condition.active = status === 'active';
+//     }
+
+//     // Apply language filter if provided
+//     if (language && language.trim() !== '') {
+//       const column = languageMapping[language.trim()];
+//       if (!column) {
+//         return res.status(400).json({ error: 'Invalid language code.' });
+//       }
+//       condition[column] = { [Op.ne]: null };
+//     }
+
+//     // Apply context filter if provided
+//     if (context && context.trim() !== '') {
+//       condition.context = context.trim();
+//     }
+
+//     const strings = await String.findAll({ where: condition });
+
+//     res.status(200).json(strings);
+//   } catch (error) {
+//     console.error('Error fetching strings:', error);
+//     res.status(500).json({ error: 'Unable to fetch strings' });
+//   }
+// };
+
+// const activeStrings = await String.findAll({
+//   where: { active: true },
+// });
+
+// console.log(activeStrings);  // Log to check the output

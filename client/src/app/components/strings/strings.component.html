@@ -1,11 +1,31 @@
 <div class="string-list-container">
   <button pButton label="Add String" class="p-button-info" routerLink="/strings/new"></button>
+  <div class="filter-container">
   <select id="status-filter" (change)="onFilterChange($event)">
     <option value="all">All</option>
     <option value="active">Active</option>
     <option value="inactive">Inactive</option>
   </select>
-  
+
+  <!-- Dropdown to select language -->
+  <select (change)="onLanguageChange($event)">
+    <option value="">All Languages</option>
+    <option value="en">English</option>
+    <option value="fr">French</option>
+    <option value="de">German</option>
+  </select>
+
+    <!-- Label to display text based on the selected language -->
+  <label>{{ labelText }}</label>
+
+  <select (change)="onContextChange($event)">
+    <option value="">All Contexts</option>
+    <option value="masculine">Masculine</option>
+    <option value="feminine">Feminine</option>
+    <option value="plural">Plural</option>
+  </select>
+</div>
+
   <div *ngIf="strings && strings.length > 0; else noStrings">
     <table class="custom-table">
       <thead>
@@ -13,6 +33,7 @@
           <th>English</th>
           <th>French</th>
           <th>German</th>
+          <th>Context</th>
           <th>Status</th>
           <th>Actions</th>
         </tr>
@@ -22,6 +43,7 @@
           <td>{{ string.eng_us }}</td>
           <td>{{ string.fr }}</td>
           <td>{{ string.de }}</td>
+          <td>{{ string.context }}</td>
           <td>{{ string.active ? 'Active' : 'Inactive' }}</td>
           <td>
             <div class="string-item-actions">

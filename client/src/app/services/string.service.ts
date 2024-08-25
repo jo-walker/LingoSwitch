@@ -10,9 +10,11 @@ export class StringService {
 
   constructor(private http: HttpClient) {}
 
-  getStringsByProjectId(projectId: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/by-project/${projectId}`);
-  }
+  getStringsByProjectId(projectId: string, status?: string): Observable<any> {
+    const params = status ? { status } : undefined;
+    return this.http.get(`${this.baseUrl}/by-project/${projectId}`, { params });
+  } 
+  
   getString(id: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/${id}`);
   }
@@ -37,12 +39,24 @@ export class StringService {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
   toggleStringStatus(id: string): Observable<any> {
-    return this.http.put(`${this.baseUrl}/toggle-status/${id}`, {});
-  }
+    return this.http.put(`${this.baseUrl}/toggle-status/${id}`, {}); // Ensure the URL is correct and it sends a PUT request
+  }  
   getActiveStrings(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/active`);
   } 
   translate(text: string): Observable<any> {
     return this.http.post(`${this.baseUrl}/translate`, { text });
   }
+  getStringsByLanguage(language: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/language/${language}`);
+  }
+  getStringsByContext(context: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/context/${context}`);
+  }
+  getFilteredStrings(params: any): Observable<any> {
+    return this.http.get(`${this.baseUrl}/filter`, { params });
+  }
+  getStringByUrlAndLang(urlId: string, stringId: string, lang: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/string-by-url-and-lang?urlId=${urlId}&stringId=${stringId}&lang=${lang}`);
+  }  
 }
