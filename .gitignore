@@ -2,4 +2,5 @@ node_modules
 .env
 server/.env
 client/.env
-```
+/server/utils/lingo-switch-620bb68e81d7.json
+    
