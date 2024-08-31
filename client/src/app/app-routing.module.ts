@@ -10,9 +10,11 @@ import { StringFormComponent } from './components/string-form/string-form.compon
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AuthGuard } from './guards/auth.guard';  // Import the AuthGuard
+import { LandingPageComponent } from './components/landing-page/landing-page.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },  // Redirect to login if no other route matches
+  // { path: '', redirectTo: '/login', pathMatch: 'full' },  // Redirect to login if no other route matches
+  { path: '', component: LandingPageComponent},
   { path: 'login', component: LoginComponent },  // Route for the login component
   { path: 'register', component: RegisterComponent },  // Route for the register component
   { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] },  // Protect these routes
@@ -25,7 +27,8 @@ const routes: Routes = [
   { path: 'strings', component: StringsComponent, canActivate: [AuthGuard] },
   { path: 'strings/new', component: StringFormComponent, canActivate: [AuthGuard] },
   { path: 'strings/edit/:id', component: StringFormComponent, canActivate: [AuthGuard] },
-  { path: '**', redirectTo: '/login', pathMatch: 'full' }  // Redirect to login for any unmatched routes
+  { path: '**', redirectTo: '/login', pathMatch: 'full' } , // Redirect to login for any unmatched routes
+  { path: '', component: LandingPageComponent}
 ];
 
 @NgModule({

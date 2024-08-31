@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class StringService {
   private baseUrl = 'http://localhost:3000/api/strings';
+  // private baseUrl = 'https://izga2lsgsd.execute-api.us-east-2.amazonaws.com/dev/strings'; // API Gateway URL
 
   constructor(private http: HttpClient) {}
 
@@ -18,7 +19,10 @@ export class StringService {
   getString(id: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/${id}`);
   }
-
+  getTranslation(urlId: string, projectId: string, lang: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}?urlId=${urlId}&projectId=${projectId}&lang=${lang}`);
+  }
+  
   getAllStrings(status?: string): Observable<any[]> {
     let url = `${this.baseUrl}`;
     if (status && status !== 'all') {
@@ -26,7 +30,20 @@ export class StringService {
     }
     return this.http.get<any[]>(url);
   }
-  
+  // getStrings(first: number, rows: number): Observable<any> {
+  //   return this.http.get<any>(`${this.baseUrl}?first=${first}&rows=${rows}`);
+  // }
+  // string.service.ts
+getStrings(page: number, size: number, sortField?: string, sortOrder?: number): Observable<any> {
+  // Implement logic to handle pagination and sorting based on the parameters.
+  const params = {
+      page,
+      size,
+      sort: `${sortField},${sortOrder === 1 ? 'asc' : 'desc'}`
+  };
+  return this.http.get('/api/strings', { params }); 
+}
+
   createString(string: any): Observable<any> {
     return this.http.post(this.baseUrl, string);
   }
@@ -38,9 +55,9 @@ export class StringService {
   deleteString(id: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
-  toggleStringStatus(id: string): Observable<any> {
-    return this.http.put(`${this.baseUrl}/toggle-status/${id}`, {}); // Ensure the URL is correct and it sends a PUT request
-  }  
+  toggleStringStatus(id: string, status: boolean): Observable<any> {
+    return this.http.put(`${this.baseUrl}/toggle-status/${id}`, { status }); // Pass the status in the request body
+  }
   getActiveStrings(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/active`);
   } 

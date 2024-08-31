@@ -33,6 +33,10 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 
+import { DataTableModule } from '@bhplugin/ng-datatable';
+import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,8 +48,8 @@ import { InputTextModule } from 'primeng/inputtext';
     ProjectDetailsComponent, 
     UrlsComponent,
     UrlFormComponent,
-    RegisterComponent
-
+    RegisterComponent,
+    LandingPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -62,7 +66,9 @@ import { InputTextModule } from 'primeng/inputtext';
     NgSelectModule,
     TableModule,
     ButtonModule,
-    InputTextModule
+    InputTextModule,
+    DataTableModule,
+    NgxDatatableModule
   ],
   providers: [
     AuthGuard,

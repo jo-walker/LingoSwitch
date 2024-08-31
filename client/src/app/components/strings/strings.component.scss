@@ -1,5 +1,91 @@
 @import '../../../styles/variables.scss'; /* Import the variables.scss file */
+
 /* Styling for the Strings list container */
+.string-list-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: $ecru;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  margin-top: 20px;
+  display: grid;
+  gap: 20px;
+}
+
+// Target the pagination buttons
+.bh-page-item,        /* Target each page item */
+.previous-page,       /* Target the previous page button */
+.next-page,           /* Target the next page button */
+.disabled,            /* Target the disabled buttons */
+.bh-active {          /* Target the active page button */
+  background-color: $blue-green; // Same color as Add String button
+  border: none;
+  color: #fff; // Text color
+  border-radius: $border-radius;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+// Hover effect
+.bh-page-item:hover,
+.previous-page:hover,
+.next-page:hover {
+  background-color: $ecru; // Same hover color as Add String button
+  color: $primary-text-color; // Adjust the text color on hover if needed
+}
+
+bh-page-item {
+  background-color: $ecru;
+  color: $primary-text-color;
+  border: none;
+  border-radius: $border-radius;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.datatable-container {
+  .bh-table-striped {
+    background-color: $ecru;
+    color: $primary-text-color;
+
+    th {
+      background-color: $primary-dark-color;
+      color: $secondary-text-color;
+    }
+
+    td {
+      border-bottom: 1px solid $ecru;
+    }
+
+    tr:hover {
+      background-color: $primary-hover-color;
+    }
+  }
+  
+  .bh-table-hover {
+    th, td {
+      transition: background-color 0.3s;
+    }
+
+    tr:hover {
+      background-color: $hover-background-color;
+    }
+  }
+}
+
+/* Dropdown filter styling */
+.select-filter-dropdown {
+  color: $primary-text-color; /* Text color (black) */
+  background-color: $white; /* Background color (white) */
+
+  option {
+    color: $primary-text-color; /* Text color for options */
+    background-color: $white; /* Background color for options */
+  }
+}
+
 .string-list-container {
   max-width: 800px;
   margin: 0 auto;
@@ -89,6 +175,21 @@
     margin-right: 0;
   }
 }
+/* Target the dropdown menu container */
+.bh-filter-menu {
+  background-color: yellow !important; /* Set background color to yellow */
+}
+
+/* Optionally, you can target the text color inside the dropdown to ensure readability */
+.bh-filter-menu button {
+  color: black !important; /* Set button text color to black */
+}
+
+/* Ensure the hover state also has the correct background color */
+.bh-filter-menu button:hover {
+  background-color: #f2f2f2 !important; /* Slightly lighter shade for hover effect */
+}
+
 /* Styling for the filter container */
 .filter-container {
   display: flex;
@@ -105,7 +206,6 @@
     align-items: stretch;
   }
 }
-
 
 /* Styling for the filter label */
 .filter-label {
@@ -148,6 +248,7 @@
     align-items: stretch;
   }
 }
+
 /* String Card Example (Optional) */
 .string-card {
   background: #fff;

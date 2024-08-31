@@ -20,6 +20,7 @@
         "mongoose": "^5.13.22",
         "mysql2": "^3.10.3",
         "sequelize": "^6.37.3",
+        "serverless-http": "^3.2.0",
         "xss-clean": "^0.1.4"
     }
 }

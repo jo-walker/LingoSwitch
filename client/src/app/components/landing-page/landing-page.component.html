@@ -1,0 +1,85 @@
+<div class="hero-section">
+  <div class="hero-content">
+    <h1>{{ content.title || 'Your Translation App - Lingo Switch' }}</h1>
+    <p>{{ content.description || 'The ultimate solution for seamless translations across multiple languages.' }}</p>
+    <div class="cta-buttons">
+      <button routerLink="/signup" class="cta-button primary">{{ content.getStartedText || 'Get Started' }}</button>
+      <button routerLink="/learn-more" class="cta-button secondary">{{ content.learnMoreText || 'Learn More' }}</button>
+    </div>
+  </div>
+</div>
+
+<div class="features-section">
+  <h2>{{ content.featuresTitle || 'Key Features' }}</h2>
+  <div class="features-grid">
+    <div class="feature">
+      <i class="feature-icon pi pi-globe"></i>
+      <h3>{{ content.multiLanguageTitle || 'Multi-Language Support' }}</h3>
+      <p>{{ content.multiLanguageDesc || 'Translate your content into multiple languages (English, French, German) with ease.' }}</p>
+    </div>
+    <div class="feature">
+      <i class="feature-icon pi pi-shield"></i>
+      <h3>{{ content.secureApiTitle || 'Secure API' }}</h3>
+      <p>{{ content.secureApiDesc || 'Ensure your data is secure with our robust API.' }}</p>
+    </div>
+    <div class="feature">
+      <i class="feature-icon pi pi-cog"></i>
+      <h3>{{ content.easyIntegrationTitle || 'Easy Integration' }}</h3>
+      <p>{{ content.easyIntegrationDesc || 'Integrate our service into your existing platform with minimal effort.' }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="how-it-works-section">
+  <h2>{{ content.howItWorksTitle || 'How It Works' }}</h2>
+  <div class="steps-grid">
+    <div class="step">
+      <h3>{{ content.step1Title || 'Step 1' }}</h3>
+      <p>{{ content.step1Desc || 'Sign up for an account and get your API key.' }}</p>
+    </div>
+    <div class="step">
+      <h3>{{ content.step2Title || 'Step 2' }}</h3>
+      <p>{{ content.step2Desc || 'Select the language you want to translate to and from.' }}</p>
+    </div>
+    <div class="step">
+      <h3>{{ content.step3Title || 'Step 3' }}</h3>
+      <p>{{ content.step3Desc || 'Use our API to get instant translations.' }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="testimonials-section">
+  <h2>{{ content.testimonialsTitle || 'What Our Users Say' }}</h2>
+  <div class="testimonials-grid">
+    <div class="testimonial">
+      <p>{{ content.testimonial1Text || '"This translation app has transformed the way we do business globally."' }}</p>
+      <p>{{ content.testimonial1Author || '- Happy Customer' }}</p>
+    </div>
+    <div class="testimonial">
+      <p>{{ content.testimonial2Text || '"The API is incredibly easy to use and integrate into our systems."' }}</p>
+      <p>{{ content.testimonial2Author || '- Satisfied Client' }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-content">
+    <a routerLink="/privacy-policy">{{ content.privacyPolicy || 'Privacy Policy' }}</a>
+    <a routerLink="/terms-of-service">{{ content.termsOfService || 'Terms of Service' }}</a>
+    <a routerLink="/contact">{{ content.contactUs || 'Contact Us' }}</a>
+  </div>
+  <br>
+  <div>
+    Lingo Switch &copy; 2024
+  </div>
+</div>
+
+<!-- Language Selector -->
+<div class="language-selector">
+  <label for="language">Choose Language:</label>
+  <select id="language" (change)="onLanguageChange($event)">
+      <option value="english">English</option>
+      <option value="french">French</option>
+      <option value="german">German</option>
+  </select>
+</div>

@@ -29,17 +29,17 @@ export class ProjectFormComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute
   ) {
+    // form group initialization with form control fields n validators
     this.projectForm = this.fb.group({
       name: ['', Validators.required],
-      languages: ['', Validators.required],
       selectedUrls: [[], Validators.required],
       selectedStrings: [[], Validators.required],
       newUrl: [''],
       newStringEn: [''],
       newStringFr: [''],
       newStringDe: [''],
-      newStringContext: ['', Validators.required],
-    });
+      newStringContext: [''], 
+    });    
   }
 
   ngOnInit(): void {
@@ -60,7 +60,7 @@ export class ProjectFormComponent implements OnInit {
       next: (project) => {
         this.projectForm.patchValue({
           name: project.name,
-          languages: project.languages.join(', '),
+          // Remove the languages field
           selectedUrls: project.urls ? project.urls.map((url: any) => url.id) : [],
           selectedStrings: project.strings ? project.strings.map((string: any) => string.id) : [],
         });
@@ -73,7 +73,7 @@ export class ProjectFormComponent implements OnInit {
       }
     });
   }
-
+  
   loadAvailableUrls(): void {
     this.projectService.getUrls().subscribe({
       next: (urls) => {
@@ -175,7 +175,6 @@ export class ProjectFormComponent implements OnInit {
   
     const project: any = {
       name: this.projectForm.get('name')?.value,
-      languages: this.projectForm.get('languages')?.value.split(',').map((lang: string) => lang.trim()),
       urls: this.projectForm.get('selectedUrls')?.value,
       strings: this.projectForm.get('selectedStrings')?.value,
       updatedBy: userId, 

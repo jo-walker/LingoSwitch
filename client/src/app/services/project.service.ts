@@ -1,21 +1,30 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
   private baseUrl = 'http://localhost:3000/api/projects';
+  // private baseUrl = 'https://izga2lsgsd.execute-api.us-east-2.amazonaws.com/dev/projects'; // API Gateway URL
   private urlsBaseUrl = 'http://localhost:3000/api/urls';
+  // private urlsBaseUrl = 'https://izga2lsgsd.execute-api.us-east-2.amazonaws.com/dev/urls'; // API Gateway URL
   private stringsBaseUrl = 'http://localhost:3000/api/strings';
+  // private stringsBaseUrl = 'https://izga2lsgsd.execute-api.us-east-2.amazonaws.com/dev/strings'; // API Gateway URL
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-  getAllProjects(): Observable<any> {
-    return this.http.get(this.baseUrl); // This will call the new route to get all projects
-  }  
-
+  // getAllProjects(): Observable<any> {
+  //   return this.http.get(this.baseUrl); // This will call the new route to get all projects
+  // }  
+  getAllProjects(): Observable<any[]> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.authService.getToken()}` // Include the token
+    });
+    return this.http.get<any[]>(this.baseUrl, { headers });
+  }
   getProject(id: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/${id}`);
   }
@@ -28,10 +37,15 @@ export class ProjectService {
     return this.http.put(`${this.baseUrl}/${id}`, project);
   }
 
+  // deleteProject(id: string): Observable<any> {
+  //   return this.http.delete(`${this.baseUrl}/${id}`);
+  // }
   deleteProject(id: string): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/${id}`);
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.authService.getToken()}` // Include the token
+    });
+    return this.http.delete(`${this.baseUrl}/${id}`, { headers });
   }
-
   // URL methods
   getUrls(): Observable<any> {
     return this.http.get(this.urlsBaseUrl);

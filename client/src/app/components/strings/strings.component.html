@@ -1,78 +1,47 @@
 <div class="string-list-container">
   <button pButton label="Add String" class="p-button-info" routerLink="/strings/new"></button>
-  <div class="filter-container">
-  <select id="status-filter" (change)="onFilterChange($event)">
-    <option value="all">All</option>
-    <option value="active">Active</option>
-    <option value="inactive">Inactive</option>
-  </select>
 
-  <!-- Dropdown to select language -->
-  <select (change)="onLanguageChange($event)">
-    <option value="">All Languages</option>
-    <option value="en">English</option>
-    <option value="fr">French</option>
-    <option value="de">German</option>
-  </select>
-
-    <!-- Label to display text based on the selected language -->
-  <label>{{ labelText }}</label>
-
-  <select (change)="onContextChange($event)">
-    <option value="">All Contexts</option>
-    <option value="masculine">Masculine</option>
-    <option value="feminine">Feminine</option>
-    <option value="plural">Plural</option>
-  </select>
-</div>
-
-  <div *ngIf="strings && strings.length > 0; else noStrings">
-    <table class="custom-table">
-      <thead>
+  <div class="datatable-container">
+    <p-table 
+      [value]="rows" 
+      [paginator]="true" 
+      [rows]="10" 
+      [rowsPerPageOptions]="[10, 20, 50]" 
+      [lazy]="true" 
+      [totalRecords]="totalRecords"
+      [loading]="loading"
+    >
+      <ng-template pTemplate="header">
         <tr>
-          <th>English</th>
-          <th>French</th>
-          <th>German</th>
-          <th>Context</th>
+          <th pSortableColumn="eng_us">English <p-sortIcon field="eng_us"></p-sortIcon></th>
+          <th pSortableColumn="fr">French <p-sortIcon field="fr"></p-sortIcon></th>
+          <th pSortableColumn="de">German <p-sortIcon field="de"></p-sortIcon></th>
+          <th pSortableColumn="mn">Mongolian <p-sortIcon field="mn"></p-sortIcon></th>
+          <th pSortableColumn="context">Context <p-sortIcon field="context"></p-sortIcon></th>
           <th>Status</th>
-          <th>Actions</th>
+          <th></th>
         </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let string of strings">
-          <td>{{ string.eng_us }}</td>
-          <td>{{ string.fr }}</td>
-          <td>{{ string.de }}</td>
-          <td>{{ string.context }}</td>
-          <td>{{ string.active ? 'Active' : 'Inactive' }}</td>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData>
+        <tr>
+          <td>{{ rowData.eng_us }}</td>
+          <td>{{ rowData.fr }}</td>
+          <td>{{ rowData.de }}</td>
+          <td>{{ rowData.context }}</td>
+          <td>{{ rowData.active ? 'Active' : 'Inactive' }}</td>
           <td>
-            <div class="string-item-actions">
-              <button pButton 
-                      label="Edit" 
-                      icon="pi pi-pencil" 
-                      class="p-button-info" 
-                      [routerLink]="['/strings/edit', string.id]">
-              </button>
-              <button pButton 
-                      label="Delete" 
-                      icon="pi pi-trash" 
-                      class="p-button-danger ml-2" 
-                      (click)="deleteString(string.id)">
-              </button>
-              <button pButton 
-                      label="{{ string.active ? 'Deactivate' : 'Activate' }}" 
-                      class="p-button-warning ml-2" 
-                      (click)="toggleStatus(string.id)">
-              </button>
-            </div>
+            <button pButton type="button" 
+                    [label]="rowData.active ? 'Deactivate' : 'Activate'" 
+                    (click)="toggleStatus(rowData)">
+            </button>
           </td>
-          
         </tr>
-      </tbody>
-    </table>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="6">No strings found.</td>
+        </tr>
+      </ng-template>
+    </p-table>
   </div>
-
-  <ng-template #noStrings>
-    <p>No strings found.</p>
-  </ng-template>
 </div>

@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TranslationService {
   private apiUrl = 'https://translation.googleapis.com/language/translate/v2'; // Example: Google Translate API URL
-  private apiKey = 'YOUR_API_KEY'; // Replace with your API key
+  private apiKey = environment.apiKey;
 
   constructor(private http: HttpClient) {}
 

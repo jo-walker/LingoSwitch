@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class UrlService {
   private baseUrl = 'http://localhost:3000/api/urls';
+  // private baseUrl = 'https://izga2lsgsd.execute-api.us-east-2.amazonaws.com/dev/urls'; // API Gateway URL
 
   constructor(private http: HttpClient) {}
 

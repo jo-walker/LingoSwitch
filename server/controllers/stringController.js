@@ -168,23 +168,43 @@ exports.getActiveStrings = async (req, res) => {
   }
 };
 // a method to update the status of a string. Here's a method for toggling between active and inactive
+// exports.toggleStringStatus = async (req, res) => {
+//   try {
+//     const string = await String.findByPk(req.params.id); 
+//     if (!string) {
+//       return res.status(404).json({ error: 'String not found' });
+//     }
+
+//     // Toggle the status
+//     string.active = !string.active;
+//     await string.save();
+
+//     res.status(200).json({ message: 'String status updated', active: string.active });
+//   } catch (error) {
+//     console.error('Error toggling string status:', error);
+//     res.status(500).json({ error: 'Unable to toggle string status' });
+//   }
+// };
 exports.toggleStringStatus = async (req, res) => {
   try {
-    const string = await String.findByPk(req.params.id); 
+    const { id } = req.params;
+    const { status } = req.body; // Assuming status is passed in the request body
+
+    const string = await String.findByPk(id); // Using Sequelize to find the string by ID
     if (!string) {
       return res.status(404).json({ error: 'String not found' });
     }
 
-    // Toggle the status
-    string.active = !string.active;
+    string.active = status; // Update the status with the value from the request body
     await string.save();
 
-    res.status(200).json({ message: 'String status updated', active: string.active });
+    res.json(string); // Respond with the updated string
   } catch (error) {
     console.error('Error toggling string status:', error);
     res.status(500).json({ error: 'Unable to toggle string status' });
   }
 };
+
 exports.getStrings = async (req, res) => {
   try {
     const statusFilter = req.query.status;

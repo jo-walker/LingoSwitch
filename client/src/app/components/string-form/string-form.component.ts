@@ -29,6 +29,7 @@ export class StringFormComponent implements OnInit {
       eng_us: ['', Validators.required],
       fr: [''],
       de: [''],
+      mn: [''],
       context: ['', Validators.required]
     });
   }
@@ -68,6 +69,7 @@ export class StringFormComponent implements OnInit {
       eng_us: this.stringForm.get('eng_us')?.value,
       fr: this.stringForm.get('fr')?.value,
       de: this.stringForm.get('de')?.value,
+      mn: this.stringForm.get('mn')?.value,
       context: this.stringForm.get('context')?.value, 
       projectId: this.projectId || null, // null if no projectId
       userId: this.authService.getCurrentUserId(), // Add userId for history tracking
